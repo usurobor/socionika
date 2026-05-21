@@ -33,21 +33,21 @@ OUTER_MAPPING = {
 }
 
 
-def _aspect_of(label: str) -> str:
-    return label[1]
+def _aspect_of(code: str) -> str:
+    return code[1]
 
 
-def _polarity_of(label: str) -> str:
-    return "BLACK" if label[0] == "Ч" else "WHITE"
+def _polarity_of(code: str) -> str:
+    return "BLACK" if code[0] == "Ч" else "WHITE"
 
 
-def _symbol_kind_of(label: str) -> str:
+def _symbol_kind_of(code: str) -> str:
     return {
         "И": "TRIANGLE",
         "С": "CIRCLE",
         "Л": "SQUARE",
         "Э": "ETHICS",
-    }[_aspect_of(label)]
+    }[_aspect_of(code)]
 
 
 class TestPlanConstants(unittest.TestCase):
@@ -94,7 +94,7 @@ class TestPlanEnums(unittest.TestCase):
 class TestBuildPlan(unittest.TestCase):
     def test_returns_plan_with_required_attrs(self) -> None:
         plan = build_plan()
-        for attr in ("inner_cells", "outer_cells", "symbols", "dividers"):
+        for attr in ("inner_cells", "outer_cells", "symbols", "boundaries"):
             self.assertTrue(
                 hasattr(plan, attr), f"plan missing attribute: {attr}"
             )
@@ -110,8 +110,8 @@ class TestBuildPlan(unittest.TestCase):
     def test_inner_clockwise_ordering(self) -> None:
         """ЧИ→ЧС→ЧЛ→ЧЭ→БИ→БС→БЛ→БЭ clockwise from 12:00."""
         plan = build_plan()
-        labels = [c.label for c in plan.inner_cells]
-        self.assertEqual(labels, CLOCKWISE_INNER_LABELS)
+        codes = [c.function_code for c in plan.inner_cells]
+        self.assertEqual(codes, CLOCKWISE_INNER_LABELS)
 
     def test_inner_first_cell_is_at_top(self) -> None:
         """First inner cell (ЧИ) is centered at 12:00 (90°)."""
@@ -122,64 +122,66 @@ class TestBuildPlan(unittest.TestCase):
     def test_inner_angular_widths(self) -> None:
         plan = build_plan()
         for c in plan.inner_cells:
-            self.assertAlmostEqual(
-                (c.end_angle_deg - c.start_angle_deg) % 360 or 360,
-                45.0,
-                places=6,
-            )
+            self.assertAlmostEqual(c.span_deg, 45.0, places=6)
 
     def test_inner_polarity_consistent_with_label(self) -> None:
         plan = build_plan()
         for c in plan.inner_cells:
-            self.assertEqual(c.polarity.name, _polarity_of(c.label))
+            self.assertEqual(c.polarity.name, _polarity_of(c.function_code))
 
     def test_inner_aspect_consistent_with_label(self) -> None:
         plan = build_plan()
         aspect_letter = {"I": "И", "S": "С", "L": "Л", "E": "Э"}
         for c in plan.inner_cells:
-            self.assertEqual(aspect_letter[c.aspect.name], _aspect_of(c.label))
+            self.assertEqual(aspect_letter[c.aspect.name], _aspect_of(c.function_code))
 
     def test_inner_opposites_180_apart(self) -> None:
+        from socionics_medallion.ir import normalized_angle_delta_deg
+
         plan = build_plan()
         opposites = {"ЧИ": "БИ", "ЧС": "БС", "ЧЛ": "БЛ", "ЧЭ": "БЭ"}
-        by_label = {c.label: c for c in plan.inner_cells}
+        by_code = {c.function_code: c for c in plan.inner_cells}
         for a, b in opposites.items():
-            diff = (by_label[a].center_angle_deg - by_label[b].center_angle_deg) % 360.0
-            # diff should be 180.
-            self.assertAlmostEqual(min(diff, 360.0 - diff), 180.0, places=6)
+            delta = normalized_angle_delta_deg(
+                by_code[a].center_angle_deg, by_code[b].center_angle_deg
+            )
+            self.assertAlmostEqual(abs(delta), 180.0, places=6)
 
     def test_outer_polarity_opposite_to_inner_parent(self) -> None:
         plan = build_plan()
-        inner_by_label = {c.label: c for c in plan.inner_cells}
+        inner_by_id = {c.cell_id: c for c in plan.inner_cells}
         for o in plan.outer_cells:
-            parent = inner_by_label[o.parent_label]
+            parent = inner_by_id[o.parent_cell_id]
             self.assertNotEqual(o.polarity, parent.polarity)
 
     def test_outer_mapping_exactly_matches_AC4(self) -> None:
         plan = build_plan()
+        inner_by_id = {c.cell_id: c for c in plan.inner_cells}
         grouped: dict[str, list[str]] = {}
         for o in plan.outer_cells:
-            grouped.setdefault(o.parent_label, []).append(o.label)
-        for parent, children in grouped.items():
-            expected = set(OUTER_MAPPING[parent])
-            self.assertEqual(set(children), expected, f"parent={parent}")
+            parent_code = inner_by_id[o.parent_cell_id].function_code
+            grouped.setdefault(parent_code, []).append(o.function_code)
+        for parent_code, children_codes in grouped.items():
+            expected = set(OUTER_MAPPING[parent_code])
+            self.assertEqual(
+                set(children_codes), expected, f"parent={parent_code}"
+            )
 
     def test_outer_two_cells_per_inner(self) -> None:
         plan = build_plan()
         from collections import Counter
 
-        counts = Counter(o.parent_label for o in plan.outer_cells)
+        counts = Counter(o.parent_cell_id for o in plan.outer_cells)
         for parent, n in counts.items():
             self.assertEqual(n, 2, f"parent={parent} has {n} children")
 
     def test_outer_cells_above_parent_half_spans(self) -> None:
         """Each outer cell's angular span is one half of its parent inner cell."""
         plan = build_plan()
-        inner_by_label = {c.label: c for c in plan.inner_cells}
+        inner_by_id = {c.cell_id: c for c in plan.inner_cells}
         for o in plan.outer_cells:
-            parent = inner_by_label[o.parent_label]
+            parent = inner_by_id[o.parent_cell_id]
             mid = (parent.start_angle_deg + parent.end_angle_deg) / 2.0
-            # outer cell must coincide with [start, mid] or [mid, end].
             left_match = (
                 math.isclose(o.start_angle_deg, parent.start_angle_deg, abs_tol=1e-9)
                 and math.isclose(o.end_angle_deg, mid, abs_tol=1e-9)
@@ -188,7 +190,10 @@ class TestBuildPlan(unittest.TestCase):
                 math.isclose(o.start_angle_deg, mid, abs_tol=1e-9)
                 and math.isclose(o.end_angle_deg, parent.end_angle_deg, abs_tol=1e-9)
             )
-            self.assertTrue(left_match or right_match, f"outer={o.label} parent={parent.label}")
+            self.assertTrue(
+                left_match or right_match,
+                f"outer={o.cell_id} parent={parent.cell_id}",
+            )
 
     def test_symbol_per_cell(self) -> None:
         """Each of the 8 inner + 16 outer cells gets one symbol = 24 total."""
@@ -197,17 +202,62 @@ class TestBuildPlan(unittest.TestCase):
 
     def test_symbol_kinds_follow_aspect(self) -> None:
         plan = build_plan()
-        cells_by_label = {c.label: c for c in plan.inner_cells}
-        cells_by_label.update({o.cell_id: o for o in plan.outer_cells})
+        cells_by_id = {c.cell_id: c for c in plan.inner_cells}
+        cells_by_id.update({c.cell_id: c for c in plan.outer_cells})
         for sym in plan.symbols:
-            owner = cells_by_label[sym.cell_id]
-            expected = _symbol_kind_of(owner.label)
+            owner = cells_by_id[sym.cell_id]
+            expected = _symbol_kind_of(owner.function_code)
             self.assertEqual(sym.kind.name, expected, f"cell_id={sym.cell_id}")
 
-    def test_dividers_present(self) -> None:
+    def test_boundaries_present(self) -> None:
         plan = build_plan()
-        # Ring-divider count is implementation-defined; just require nonzero.
-        self.assertGreater(len(plan.dividers), 0)
+        # 8 inner + 16 outer = 24 inter-cell boundaries.
+        self.assertEqual(len(plan.boundaries), INNER_SECTORS + OUTER_SECTORS)
+
+
+# ---------------------------------------------------------------------------
+# AC1 — cell_id is unique and distinct from function_code.
+# ---------------------------------------------------------------------------
+class TestCellIdUniqueness(unittest.TestCase):
+    def test_all_24_cell_ids_unique(self) -> None:
+        plan = build_plan()
+        all_ids = [c.cell_id for c in plan.inner_cells] + [
+            c.cell_id for c in plan.outer_cells
+        ]
+        self.assertEqual(len(all_ids), 24)
+        self.assertEqual(len(set(all_ids)), 24)
+
+    def test_outer_function_codes_collide_by_design(self) -> None:
+        plan = build_plan()
+        outer_codes = [c.function_code for c in plan.outer_cells]
+        # 16 outer cells share only 8 distinct function codes.
+        self.assertEqual(len(set(outer_codes)), 8)
+
+    def test_inner_function_codes_are_distinct(self) -> None:
+        plan = build_plan()
+        inner_codes = [c.function_code for c in plan.inner_cells]
+        self.assertEqual(len(set(inner_codes)), 8)
+
+    def test_cell_id_never_equals_function_code(self) -> None:
+        plan = build_plan()
+        for c in list(plan.inner_cells) + list(plan.outer_cells):
+            self.assertNotEqual(
+                c.cell_id,
+                c.function_code,
+                f"cell_id collides with function_code: {c.cell_id}",
+            )
+
+    def test_inner_cell_id_scheme(self) -> None:
+        plan = build_plan()
+        expected = [f"inner:{i:02d}" for i in range(8)]
+        actual = [c.cell_id for c in plan.inner_cells]
+        self.assertEqual(actual, expected)
+
+    def test_outer_cell_id_scheme(self) -> None:
+        plan = build_plan()
+        ids = sorted(c.cell_id for c in plan.outer_cells)
+        expected = sorted(f"outer:{i:02d}" for i in range(16))
+        self.assertEqual(ids, expected)
 
 
 class TestPlanImportPurity(unittest.TestCase):

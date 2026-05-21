@@ -1,7 +1,7 @@
 """Executor protocol + StubExecutor (CadQuery-free) + CadQueryExecutor.
 
 CadQuery may only be imported lazily inside CadQueryExecutor methods.
-A module-level `import cadquery` is forbidden and verified by tests.
+A module-level ``import cadquery`` is forbidden and verified by tests.
 """
 
 from __future__ import annotations
@@ -13,8 +13,14 @@ from typing import Any, Iterable, Protocol, runtime_checkable
 
 from socionics_medallion.ir import (
     ALL_OP_TYPES,
+    ALL_OP_TYPES_ORDERED,
     CadOp,
+    CutSymbol,
+    EngravedDivider,
+    LowerField,
     Prism,
+    RaisedDivider,
+    RaisedSymbol,
     op_to_dict,
 )
 
@@ -50,7 +56,9 @@ class StubExecutor:
         op_list = list(ops)
         counts: Counter = Counter(type(o).__name__ for o in op_list)
         # Guarantee a stable counts schema by initialising all op types.
-        counts_dict = {t.__name__: counts.get(t.__name__, 0) for t in ALL_OP_TYPES}
+        counts_dict = {
+            t.__name__: counts.get(t.__name__, 0) for t in ALL_OP_TYPES_ORDERED
+        }
         return {
             "counts": counts_dict,
             "ops": [op_to_dict(o) for o in op_list],
@@ -59,7 +67,7 @@ class StubExecutor:
             ),
             "not_yet_implemented": sorted(
                 t.__name__
-                for t in ALL_OP_TYPES
+                for t in ALL_OP_TYPES_ORDERED
                 if t not in CadQueryExecutor.IMPLEMENTED_OPS
             ),
         }
@@ -116,21 +124,21 @@ class CadQueryExecutor:
         cq = self._cq
         cx, cy = op.center
         height = op.z1 - op.z0
-        # Build the sector outline as a closed polyline:
-        # arc from inner_radius @ start → outer_radius @ start (radial out),
-        # arc CCW outer_radius from start → end,
-        # arc from outer_radius @ end → inner_radius @ end (radial in),
-        # arc CW inner_radius from end → start.
+        start = op.angle_start_deg
+        end = op.angle_end_deg
+        # Resolve the midpoint from the IR field — never via (start + end)/2,
+        # which is fragile across wrap-arounds (AC2).
+        mid = op.center_angle_deg
+        # If end <= start in the unwrapped representation, unwrap end and the
+        # mid so the arc remains a proper CCW sweep.
+        if end <= start:
+            end += 360.0
+            if mid < start:
+                mid += 360.0
+
         def pt(r: float, theta_deg: float) -> tuple[float, float]:
             t = math.radians(theta_deg)
             return (cx + r * math.cos(t), cy + r * math.sin(t))
-
-        start = op.start_angle_deg
-        end = op.end_angle_deg
-        # If end <= start in normalized form, unwrap to keep arcs CCW.
-        if end <= start:
-            end += 360.0
-        mid = (start + end) / 2.0
 
         p_inner_start = pt(op.inner_radius, start)
         p_outer_start = pt(op.outer_radius, start)
@@ -160,3 +168,10 @@ class CadQueryExecutor:
         if solid is None:
             return new_piece
         return solid.union(new_piece)
+
+
+# ---------------------------------------------------------------------------
+# Module-level alias so AC9's CLI smoke check works without instantiating
+# the executor (which would require cadquery).
+# ---------------------------------------------------------------------------
+IMPLEMENTED_OPS: frozenset = CadQueryExecutor.IMPLEMENTED_OPS

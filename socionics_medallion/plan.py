@@ -9,12 +9,30 @@ Layout (issue #1 AC3, AC4):
     Aspect: *И = TRIANGLE, *С = CIRCLE, *Л = SQUARE, *Э = ETHICS.
     Each inner cell has two outer half-sized cells of opposite polarity per
     the AC4 mapping table.
+
+Cell-id scheme
+--------------
+Per issue #3 §AC1 the Cyrillic function code (``ЧИ``, ``БЛ`` etc.) is the cell's
+``function_code`` — it is *not* unique repo-wide, because each outer-ring
+function code appears twice (once on each side of its sponsoring inner cell).
+
+The unique ``cell_id`` is positional:
+
+* Inner cells: ``inner:NN`` where ``NN`` is the clockwise index 00..07
+  (``inner:00`` = ЧИ at 12:00, ``inner:01`` = ЧС, … ``inner:07`` = БЭ).
+* Outer cells: ``outer:NN`` where ``NN`` is the index 00..15 produced by
+  sorting outer cells by ``angle_start_deg`` ascending and assigning indices
+  in that order. The sort is deterministic because outer-ring boundaries are
+  on the 22.5° grid.
+
+Lookups (symbol kind, polarity, opposite) key on ``cell_id``; ``function_code``
+is informational and may collide across the outer ring.
 """
 
 from __future__ import annotations
 
 import enum
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Tuple
 
 # ---------------------------------------------------------------------------
@@ -117,19 +135,20 @@ OUTER_MAPPING: dict[str, Tuple[str, str]] = {
 # ---------------------------------------------------------------------------
 @dataclass(frozen=True, slots=True)
 class CellSpec:
-    cell_id: str
-    label: str  # the Cyrillic 2-letter label, e.g. "ЧИ"
-    ring: str  # "inner" | "outer"
+    cell_id: str  # unique, positional (e.g. 'inner:00', 'outer:13')
+    function_code: str  # Cyrillic 2-letter label (not unique in outer ring)
+    ring: str  # 'inner' | 'outer'
     polarity: Polarity
     aspect: Aspect
     start_angle_deg: float
     end_angle_deg: float
     center_angle_deg: float
+    span_deg: float
     inner_radius: float
     outer_radius: float
-    # Outer cells point at their parent inner cell's label; inner cells point
-    # at themselves (parent_label == label) for uniform indexing.
-    parent_label: str
+    # Outer cells point at their parent inner cell's cell_id; inner cells
+    # point at themselves (parent_cell_id == cell_id) for uniform indexing.
+    parent_cell_id: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -143,19 +162,25 @@ class SymbolSpec:
 
 
 @dataclass(frozen=True, slots=True)
-class DividerSpec:
-    """A single radial divider between two adjacent cells.
+class BoundarySpec:
+    """A single radial boundary between two adjacent cells.
 
-    The compiler decides treatment based on `polarity_a`/`polarity_b`.
+    The compiler decides treatment (raised rib, engraved groove, or both)
+    based on the polarities of the adjacent cells.
     """
 
-    start_angle_deg: float
-    end_angle_deg: float
-    inner_radius: float
-    outer_radius: float
+    boundary_id: str
+    ring: str  # 'inner' | 'outer'
+    cell_a_id: str
+    cell_b_id: str
     polarity_a: Polarity
     polarity_b: Polarity
-    ring: str  # "inner" | "outer"
+    start_angle_deg: float
+    end_angle_deg: float
+    center_angle_deg: float
+    span_deg: float
+    inner_radius: float
+    outer_radius: float
 
 
 @dataclass(frozen=True, slots=True)
@@ -163,26 +188,26 @@ class Plan:
     inner_cells: Tuple[CellSpec, ...]
     outer_cells: Tuple[CellSpec, ...]
     symbols: Tuple[SymbolSpec, ...]
-    dividers: Tuple[DividerSpec, ...]
+    boundaries: Tuple[BoundarySpec, ...]
 
 
 # ---------------------------------------------------------------------------
 # Construction.
 # ---------------------------------------------------------------------------
-def _polarity_of_label(label: str) -> Polarity:
-    return Polarity.BLACK if label[0] == "Ч" else Polarity.WHITE
+def _polarity_of_code(code: str) -> Polarity:
+    return Polarity.BLACK if code[0] == "Ч" else Polarity.WHITE
 
 
-def _aspect_of_label(label: str) -> Aspect:
-    return _LETTER_TO_ASPECT[label[1]]
+def _aspect_of_code(code: str) -> Aspect:
+    return _LETTER_TO_ASPECT[code[1]]
 
 
-def _symbol_kind_of_label(label: str) -> SymbolKind:
-    return _ASPECT_TO_SYMBOL[_aspect_of_label(label)]
+def _symbol_kind_of_code(code: str) -> SymbolKind:
+    return _ASPECT_TO_SYMBOL[_aspect_of_code(code)]
 
 
 def _inner_center_angle(index: int) -> float:
-    """Inner cell `index` (0..7) centered clockwise from 12:00.
+    """Inner cell ``index`` (0..7) centered clockwise from 12:00.
 
     In math convention (CCW from +x), 12:00 is 90°. Going clockwise means
     angle decreases: index 0 at 90°, index 1 at 90° - 45° = 45°, etc.
@@ -192,7 +217,6 @@ def _inner_center_angle(index: int) -> float:
     ЧЛ-БЛ axis) remain a contiguous [start, end] interval with end > start.
     """
     raw = 90.0 - index * INNER_SECTOR_DEG
-    # Normalise to (-180, 180].
     while raw <= -180.0:
         raw += 360.0
     while raw > 180.0:
@@ -201,11 +225,26 @@ def _inner_center_angle(index: int) -> float:
 
 
 def _inner_span(index: int) -> Tuple[float, float]:
-    """Return (start_deg, end_deg) for inner cell `index`. `end > start` always."""
+    """Return ``(start_deg, end_deg)`` for inner cell ``index``.
+
+    Always ``end > start``.
+    """
     center = _inner_center_angle(index)
     start = center - INNER_SECTOR_DEG / 2.0
     end = center + INNER_SECTOR_DEG / 2.0
     return (start, end)
+
+
+def _inner_cell_id(index: int) -> str:
+    return f"inner:{index:02d}"
+
+
+def _outer_cell_id(index: int) -> str:
+    return f"outer:{index:02d}"
+
+
+def _boundary_id(ring: str, index: int) -> str:
+    return f"{ring}-boundary:{index:02d}"
 
 
 def build_plan() -> Plan:
@@ -214,56 +253,70 @@ def build_plan() -> Plan:
     Deterministic: identical output for identical inputs. No filesystem,
     no globals, no randomness.
     """
+    # Inner cells, in clockwise order, get sequential cell_ids inner:00..07.
     inner_cells: list[CellSpec] = []
-    for i, label in enumerate(INNER_LABELS_CLOCKWISE):
+    for i, code in enumerate(INNER_LABELS_CLOCKWISE):
         start, end = _inner_span(i)
         center = _inner_center_angle(i)
+        cell_id = _inner_cell_id(i)
         inner_cells.append(
             CellSpec(
-                # Inner cell_id is just the Cyrillic label so that symbols
-                # in either ring can be indexed by their cell's natural key.
-                cell_id=label,
-                label=label,
+                cell_id=cell_id,
+                function_code=code,
                 ring="inner",
-                polarity=_polarity_of_label(label),
-                aspect=_aspect_of_label(label),
+                polarity=_polarity_of_code(code),
+                aspect=_aspect_of_code(code),
                 start_angle_deg=start,
                 end_angle_deg=end,
                 center_angle_deg=center,
+                span_deg=INNER_SECTOR_DEG,
                 inner_radius=INNER_HUB_RADIUS,
                 outer_radius=INNER_OUTER_RADIUS,
-                parent_label=label,
+                parent_cell_id=cell_id,
             )
         )
 
-    outer_cells: list[CellSpec] = []
-    # For each inner cell, emit two outer cells: left half (CCW side, lower
-    # angles relative to the parent center in math convention) and right
-    # half (CW side). Per OUTER_MAPPING, the first child label is the
-    # left-half occupant.
+    # Outer cells: two per inner. Build the raw list first, then sort by
+    # start angle and assign deterministic outer:NN cell_ids.
+    raw_outer: list[dict] = []
     for parent in inner_cells:
-        left_label, right_label = OUTER_MAPPING[parent.label]
+        left_code, right_code = OUTER_MAPPING[parent.function_code]
         mid = (parent.start_angle_deg + parent.end_angle_deg) / 2.0
         halves = (
-            (left_label, parent.start_angle_deg, mid, "L"),
-            (right_label, mid, parent.end_angle_deg, "R"),
+            (left_code, parent.start_angle_deg, mid),
+            (right_code, mid, parent.end_angle_deg),
         )
-        for label, ostart, oend, side in halves:
-            outer_cells.append(
-                CellSpec(
-                    cell_id=f"outer:{parent.label}:{side}",
-                    label=label,
-                    ring="outer",
-                    polarity=_polarity_of_label(label),
-                    aspect=_aspect_of_label(label),
-                    start_angle_deg=ostart,
-                    end_angle_deg=oend,
-                    center_angle_deg=(ostart + oend) / 2.0,
-                    inner_radius=INNER_OUTER_RADIUS,
-                    outer_radius=OUTER_RING_RADIUS,
-                    parent_label=parent.label,
+        for code, ostart, oend in halves:
+            raw_outer.append(
+                dict(
+                    function_code=code,
+                    parent_cell_id=parent.cell_id,
+                    start=ostart,
+                    end=oend,
                 )
             )
+
+    raw_outer.sort(key=lambda r: r["start"])
+    outer_cells: list[CellSpec] = []
+    for idx, r in enumerate(raw_outer):
+        ostart = float(r["start"])
+        oend = float(r["end"])
+        outer_cells.append(
+            CellSpec(
+                cell_id=_outer_cell_id(idx),
+                function_code=str(r["function_code"]),
+                ring="outer",
+                polarity=_polarity_of_code(str(r["function_code"])),
+                aspect=_aspect_of_code(str(r["function_code"])),
+                start_angle_deg=ostart,
+                end_angle_deg=oend,
+                center_angle_deg=(ostart + oend) / 2.0,
+                span_deg=oend - ostart,
+                inner_radius=INNER_OUTER_RADIUS,
+                outer_radius=OUTER_RING_RADIUS,
+                parent_cell_id=str(r["parent_cell_id"]),
+            )
+        )
 
     # Symbols — one per cell, 24 total.
     symbols: list[SymbolSpec] = []
@@ -271,7 +324,7 @@ def build_plan() -> Plan:
         symbols.append(
             SymbolSpec(
                 cell_id=c.cell_id,
-                kind=_symbol_kind_of_label(c.label),
+                kind=_symbol_kind_of_code(c.function_code),
                 polarity=c.polarity,
                 center_angle_deg=c.center_angle_deg,
                 center_radius=(INNER_HUB_RADIUS + INNER_OUTER_RADIUS) / 2.0,
@@ -282,7 +335,7 @@ def build_plan() -> Plan:
         symbols.append(
             SymbolSpec(
                 cell_id=c.cell_id,
-                kind=_symbol_kind_of_label(c.label),
+                kind=_symbol_kind_of_code(c.function_code),
                 polarity=c.polarity,
                 center_angle_deg=c.center_angle_deg,
                 center_radius=(INNER_OUTER_RADIUS + OUTER_RING_RADIUS) / 2.0,
@@ -290,43 +343,59 @@ def build_plan() -> Plan:
             )
         )
 
-    # Dividers — between adjacent cells in each ring. We emit one divider
-    # per inter-cell boundary, recorded at the shared edge angle.
-    dividers: list[DividerSpec] = []
-    # Inner ring: 8 boundaries.
+    # Boundaries — between adjacent cells in each ring. We emit one
+    # BoundarySpec per inter-cell edge, recorded at the shared edge angle.
+    boundaries: list[BoundarySpec] = []
+    half_w = DIVIDER_WIDTH_DEG / 2.0
+
+    # Inner ring: 8 boundaries, in clockwise (inner_cells) order.
     for i in range(INNER_SECTORS):
         a = inner_cells[i]
         b = inner_cells[(i + 1) % INNER_SECTORS]
-        edge = a.end_angle_deg  # shared edge
-        half_w = DIVIDER_WIDTH_DEG / 2.0
-        dividers.append(
-            DividerSpec(
-                start_angle_deg=(edge - half_w) % 360.0,
-                end_angle_deg=(edge + half_w) % 360.0,
+        # Inner cells are ordered clockwise (descending centers). The shared
+        # edge between cell i and cell i+1 is cell i's start_angle_deg (which
+        # equals cell (i+1)'s end_angle_deg in CCW). Use unwrapped angles.
+        edge = a.start_angle_deg
+        bstart = edge - half_w
+        bend = edge + half_w
+        boundaries.append(
+            BoundarySpec(
+                boundary_id=_boundary_id("inner", i),
+                ring="inner",
+                cell_a_id=a.cell_id,
+                cell_b_id=b.cell_id,
+                polarity_a=a.polarity,
+                polarity_b=b.polarity,
+                start_angle_deg=bstart,
+                end_angle_deg=bend,
+                center_angle_deg=edge,
+                span_deg=DIVIDER_WIDTH_DEG,
                 inner_radius=INNER_HUB_RADIUS,
                 outer_radius=INNER_OUTER_RADIUS,
-                polarity_a=a.polarity,
-                polarity_b=b.polarity,
-                ring="inner",
             )
         )
-    # Outer ring: 16 boundaries. To get deterministic adjacency order we
-    # sort outer cells by start_angle_deg.
-    outer_sorted = sorted(outer_cells, key=lambda c: c.start_angle_deg)
+
+    # Outer ring: 16 boundaries, in CCW order by start_angle_deg.
     for i in range(OUTER_SECTORS):
-        a = outer_sorted[i]
-        b = outer_sorted[(i + 1) % OUTER_SECTORS]
+        a = outer_cells[i]
+        b = outer_cells[(i + 1) % OUTER_SECTORS]
         edge = a.end_angle_deg
-        half_w = DIVIDER_WIDTH_DEG / 2.0
-        dividers.append(
-            DividerSpec(
-                start_angle_deg=(edge - half_w) % 360.0,
-                end_angle_deg=(edge + half_w) % 360.0,
-                inner_radius=INNER_OUTER_RADIUS,
-                outer_radius=OUTER_RING_RADIUS,
+        bstart = edge - half_w
+        bend = edge + half_w
+        boundaries.append(
+            BoundarySpec(
+                boundary_id=_boundary_id("outer", i),
+                ring="outer",
+                cell_a_id=a.cell_id,
+                cell_b_id=b.cell_id,
                 polarity_a=a.polarity,
                 polarity_b=b.polarity,
-                ring="outer",
+                start_angle_deg=bstart,
+                end_angle_deg=bend,
+                center_angle_deg=edge,
+                span_deg=DIVIDER_WIDTH_DEG,
+                inner_radius=INNER_OUTER_RADIUS,
+                outer_radius=OUTER_RING_RADIUS,
             )
         )
 
@@ -334,5 +403,5 @@ def build_plan() -> Plan:
         inner_cells=tuple(inner_cells),
         outer_cells=tuple(outer_cells),
         symbols=tuple(symbols),
-        dividers=tuple(dividers),
+        boundaries=tuple(boundaries),
     )
