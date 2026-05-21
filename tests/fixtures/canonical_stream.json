@@ -1,938 +1,1285 @@
-[
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": 112.5,
-    "inner_radius": 4.0,
-    "op": "prism",
-    "outer_radius": 22.0,
-    "start_angle_deg": 67.5,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": 67.5,
-    "inner_radius": 4.0,
-    "op": "prism",
-    "outer_radius": 22.0,
-    "start_angle_deg": 22.5,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": 22.5,
-    "inner_radius": 4.0,
-    "op": "prism",
-    "outer_radius": 22.0,
-    "start_angle_deg": -22.5,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": -22.5,
-    "inner_radius": 4.0,
-    "op": "prism",
-    "outer_radius": 22.0,
-    "start_angle_deg": -67.5,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": -67.5,
-    "inner_radius": 4.0,
-    "op": "prism",
-    "outer_radius": 22.0,
-    "start_angle_deg": -112.5,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": -112.5,
-    "inner_radius": 4.0,
-    "op": "prism",
-    "outer_radius": 22.0,
-    "start_angle_deg": -157.5,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": 202.5,
-    "inner_radius": 4.0,
-    "op": "prism",
-    "outer_radius": 22.0,
-    "start_angle_deg": 157.5,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": 157.5,
-    "inner_radius": 4.0,
-    "op": "prism",
-    "outer_radius": 22.0,
-    "start_angle_deg": 112.5,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": -135.0,
-    "inner_radius": 22.0,
-    "op": "prism",
-    "outer_radius": 38.0,
-    "start_angle_deg": -157.5,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": -112.5,
-    "inner_radius": 22.0,
-    "op": "prism",
-    "outer_radius": 38.0,
-    "start_angle_deg": -135.0,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": -90.0,
-    "inner_radius": 22.0,
-    "op": "prism",
-    "outer_radius": 38.0,
-    "start_angle_deg": -112.5,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": -67.5,
-    "inner_radius": 22.0,
-    "op": "prism",
-    "outer_radius": 38.0,
-    "start_angle_deg": -90.0,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": -45.0,
-    "inner_radius": 22.0,
-    "op": "prism",
-    "outer_radius": 38.0,
-    "start_angle_deg": -67.5,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": -22.5,
-    "inner_radius": 22.0,
-    "op": "prism",
-    "outer_radius": 38.0,
-    "start_angle_deg": -45.0,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": 0.0,
-    "inner_radius": 22.0,
-    "op": "prism",
-    "outer_radius": 38.0,
-    "start_angle_deg": -22.5,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": 22.5,
-    "inner_radius": 22.0,
-    "op": "prism",
-    "outer_radius": 38.0,
-    "start_angle_deg": 0.0,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": 45.0,
-    "inner_radius": 22.0,
-    "op": "prism",
-    "outer_radius": 38.0,
-    "start_angle_deg": 22.5,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": 67.5,
-    "inner_radius": 22.0,
-    "op": "prism",
-    "outer_radius": 38.0,
-    "start_angle_deg": 45.0,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": 90.0,
-    "inner_radius": 22.0,
-    "op": "prism",
-    "outer_radius": 38.0,
-    "start_angle_deg": 67.5,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": 112.5,
-    "inner_radius": 22.0,
-    "op": "prism",
-    "outer_radius": 38.0,
-    "start_angle_deg": 90.0,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": 135.0,
-    "inner_radius": 22.0,
-    "op": "prism",
-    "outer_radius": 38.0,
-    "start_angle_deg": 112.5,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": 157.5,
-    "inner_radius": 22.0,
-    "op": "prism",
-    "outer_radius": 38.0,
-    "start_angle_deg": 135.0,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": 180.0,
-    "inner_radius": 22.0,
-    "op": "prism",
-    "outer_radius": 38.0,
-    "start_angle_deg": 157.5,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "end_angle_deg": 202.5,
-    "inner_radius": 22.0,
-    "op": "prism",
-    "outer_radius": 38.0,
-    "start_angle_deg": 180.0,
-    "z0": 0.0,
-    "z1": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "depth": 0.6,
-    "end_angle_deg": 112.5,
-    "inner_radius": 4.0,
-    "op": "lower_field",
-    "outer_radius": 22.0,
-    "start_angle_deg": 67.5,
-    "surface_z": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "depth": 0.6,
-    "end_angle_deg": 67.5,
-    "inner_radius": 4.0,
-    "op": "lower_field",
-    "outer_radius": 22.0,
-    "start_angle_deg": 22.5,
-    "surface_z": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "depth": 0.6,
-    "end_angle_deg": 22.5,
-    "inner_radius": 4.0,
-    "op": "lower_field",
-    "outer_radius": 22.0,
-    "start_angle_deg": -22.5,
-    "surface_z": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "depth": 0.6,
-    "end_angle_deg": -22.5,
-    "inner_radius": 4.0,
-    "op": "lower_field",
-    "outer_radius": 22.0,
-    "start_angle_deg": -67.5,
-    "surface_z": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "depth": 0.6,
-    "end_angle_deg": -135.0,
-    "inner_radius": 22.0,
-    "op": "lower_field",
-    "outer_radius": 38.0,
-    "start_angle_deg": -157.5,
-    "surface_z": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "depth": 0.6,
-    "end_angle_deg": -112.5,
-    "inner_radius": 22.0,
-    "op": "lower_field",
-    "outer_radius": 38.0,
-    "start_angle_deg": -135.0,
-    "surface_z": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "depth": 0.6,
-    "end_angle_deg": -90.0,
-    "inner_radius": 22.0,
-    "op": "lower_field",
-    "outer_radius": 38.0,
-    "start_angle_deg": -112.5,
-    "surface_z": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "depth": 0.6,
-    "end_angle_deg": -67.5,
-    "inner_radius": 22.0,
-    "op": "lower_field",
-    "outer_radius": 38.0,
-    "start_angle_deg": -90.0,
-    "surface_z": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "depth": 0.6,
-    "end_angle_deg": 135.0,
-    "inner_radius": 22.0,
-    "op": "lower_field",
-    "outer_radius": 38.0,
-    "start_angle_deg": 112.5,
-    "surface_z": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "depth": 0.6,
-    "end_angle_deg": 157.5,
-    "inner_radius": 22.0,
-    "op": "lower_field",
-    "outer_radius": 38.0,
-    "start_angle_deg": 135.0,
-    "surface_z": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "depth": 0.6,
-    "end_angle_deg": 180.0,
-    "inner_radius": 22.0,
-    "op": "lower_field",
-    "outer_radius": 38.0,
-    "start_angle_deg": 157.5,
-    "surface_z": 4.0
-  },
-  {
-    "center": [
-      0.0,
-      0.0
-    ],
-    "depth": 0.6,
-    "end_angle_deg": 202.5,
-    "inner_radius": 22.0,
-    "op": "lower_field",
-    "outer_radius": 38.0,
-    "start_angle_deg": 180.0,
-    "surface_z": 4.0
-  },
-  {
-    "base_z": 3.4,
-    "center_angle_deg": 90.0,
-    "center_radius": 13.0,
-    "height": 0.8,
-    "op": "raised_symbol",
-    "size_S": 6.0,
-    "symbol_kind": "TRIANGLE"
-  },
-  {
-    "base_z": 3.4,
-    "center_angle_deg": 45.0,
-    "center_radius": 13.0,
-    "height": 0.8,
-    "op": "raised_symbol",
-    "size_S": 6.0,
-    "symbol_kind": "CIRCLE"
-  },
-  {
-    "base_z": 3.4,
-    "center_angle_deg": 0.0,
-    "center_radius": 13.0,
-    "height": 0.8,
-    "op": "raised_symbol",
-    "size_S": 6.0,
-    "symbol_kind": "SQUARE"
-  },
-  {
-    "base_z": 3.4,
-    "center_angle_deg": -45.0,
-    "center_radius": 13.0,
-    "height": 0.8,
-    "op": "raised_symbol",
-    "size_S": 6.0,
-    "symbol_kind": "ETHICS"
-  },
-  {
-    "center_angle_deg": -90.0,
-    "center_radius": 13.0,
-    "depth": 0.6,
-    "op": "cut_symbol",
-    "size_S": 6.0,
-    "surface_z": 4.0,
-    "symbol_kind": "TRIANGLE"
-  },
-  {
-    "center_angle_deg": -135.0,
-    "center_radius": 13.0,
-    "depth": 0.6,
-    "op": "cut_symbol",
-    "size_S": 6.0,
-    "surface_z": 4.0,
-    "symbol_kind": "CIRCLE"
-  },
-  {
-    "center_angle_deg": 180.0,
-    "center_radius": 13.0,
-    "depth": 0.6,
-    "op": "cut_symbol",
-    "size_S": 6.0,
-    "surface_z": 4.0,
-    "symbol_kind": "SQUARE"
-  },
-  {
-    "center_angle_deg": 135.0,
-    "center_radius": 13.0,
-    "depth": 0.6,
-    "op": "cut_symbol",
-    "size_S": 6.0,
-    "surface_z": 4.0,
-    "symbol_kind": "ETHICS"
-  },
-  {
-    "base_z": 3.4,
-    "center_angle_deg": -146.25,
-    "center_radius": 30.0,
-    "height": 0.8,
-    "op": "raised_symbol",
-    "size_S": 3.5,
-    "symbol_kind": "SQUARE"
-  },
-  {
-    "base_z": 3.4,
-    "center_angle_deg": -123.75,
-    "center_radius": 30.0,
-    "height": 0.8,
-    "op": "raised_symbol",
-    "size_S": 3.5,
-    "symbol_kind": "ETHICS"
-  },
-  {
-    "base_z": 3.4,
-    "center_angle_deg": -101.25,
-    "center_radius": 30.0,
-    "height": 0.8,
-    "op": "raised_symbol",
-    "size_S": 3.5,
-    "symbol_kind": "SQUARE"
-  },
-  {
-    "base_z": 3.4,
-    "center_angle_deg": -78.75,
-    "center_radius": 30.0,
-    "height": 0.8,
-    "op": "raised_symbol",
-    "size_S": 3.5,
-    "symbol_kind": "ETHICS"
-  },
-  {
-    "center_angle_deg": -56.25,
-    "center_radius": 30.0,
-    "depth": 0.6,
-    "op": "cut_symbol",
-    "size_S": 3.5,
-    "surface_z": 4.0,
-    "symbol_kind": "TRIANGLE"
-  },
-  {
-    "center_angle_deg": -33.75,
-    "center_radius": 30.0,
-    "depth": 0.6,
-    "op": "cut_symbol",
-    "size_S": 3.5,
-    "surface_z": 4.0,
-    "symbol_kind": "CIRCLE"
-  },
-  {
-    "center_angle_deg": -11.25,
-    "center_radius": 30.0,
-    "depth": 0.6,
-    "op": "cut_symbol",
-    "size_S": 3.5,
-    "surface_z": 4.0,
-    "symbol_kind": "TRIANGLE"
-  },
-  {
-    "center_angle_deg": 11.25,
-    "center_radius": 30.0,
-    "depth": 0.6,
-    "op": "cut_symbol",
-    "size_S": 3.5,
-    "surface_z": 4.0,
-    "symbol_kind": "CIRCLE"
-  },
-  {
-    "center_angle_deg": 33.75,
-    "center_radius": 30.0,
-    "depth": 0.6,
-    "op": "cut_symbol",
-    "size_S": 3.5,
-    "surface_z": 4.0,
-    "symbol_kind": "SQUARE"
-  },
-  {
-    "center_angle_deg": 56.25,
-    "center_radius": 30.0,
-    "depth": 0.6,
-    "op": "cut_symbol",
-    "size_S": 3.5,
-    "surface_z": 4.0,
-    "symbol_kind": "ETHICS"
-  },
-  {
-    "center_angle_deg": 78.75,
-    "center_radius": 30.0,
-    "depth": 0.6,
-    "op": "cut_symbol",
-    "size_S": 3.5,
-    "surface_z": 4.0,
-    "symbol_kind": "SQUARE"
-  },
-  {
-    "center_angle_deg": 101.25,
-    "center_radius": 30.0,
-    "depth": 0.6,
-    "op": "cut_symbol",
-    "size_S": 3.5,
-    "surface_z": 4.0,
-    "symbol_kind": "ETHICS"
-  },
-  {
-    "base_z": 3.4,
-    "center_angle_deg": 123.75,
-    "center_radius": 30.0,
-    "height": 0.8,
-    "op": "raised_symbol",
-    "size_S": 3.5,
-    "symbol_kind": "TRIANGLE"
-  },
-  {
-    "base_z": 3.4,
-    "center_angle_deg": 146.25,
-    "center_radius": 30.0,
-    "height": 0.8,
-    "op": "raised_symbol",
-    "size_S": 3.5,
-    "symbol_kind": "CIRCLE"
-  },
-  {
-    "base_z": 3.4,
-    "center_angle_deg": 168.75,
-    "center_radius": 30.0,
-    "height": 0.8,
-    "op": "raised_symbol",
-    "size_S": 3.5,
-    "symbol_kind": "TRIANGLE"
-  },
-  {
-    "base_z": 3.4,
-    "center_angle_deg": 191.25,
-    "center_radius": 30.0,
-    "height": 0.8,
-    "op": "raised_symbol",
-    "size_S": 3.5,
-    "symbol_kind": "CIRCLE"
-  },
-  {
-    "base_z": 3.4,
-    "end_angle_deg": 22.8,
-    "height": 0.4,
-    "inner_radius": 4.0,
-    "op": "raised_divider",
-    "outer_radius": 22.0,
-    "start_angle_deg": 22.2
-  },
-  {
-    "base_z": 3.4,
-    "end_angle_deg": 67.8,
-    "height": 0.4,
-    "inner_radius": 4.0,
-    "op": "raised_divider",
-    "outer_radius": 22.0,
-    "start_angle_deg": 67.2
-  },
-  {
-    "base_z": 3.4,
-    "end_angle_deg": 112.8,
-    "height": 0.4,
-    "inner_radius": 4.0,
-    "op": "raised_divider",
-    "outer_radius": 22.0,
-    "start_angle_deg": 112.2
-  },
-  {
-    "base_z": 3.4,
-    "end_angle_deg": 157.8,
-    "height": 0.4,
-    "inner_radius": 4.0,
-    "op": "raised_divider",
-    "outer_radius": 22.0,
-    "start_angle_deg": 157.2
-  },
-  {
-    "depth": 0.3,
-    "end_angle_deg": 157.8,
-    "inner_radius": 4.0,
-    "op": "engraved_divider",
-    "outer_radius": 22.0,
-    "start_angle_deg": 157.2,
-    "surface_z": 4.0
-  },
-  {
-    "depth": 0.3,
-    "end_angle_deg": 202.8,
-    "inner_radius": 4.0,
-    "op": "engraved_divider",
-    "outer_radius": 22.0,
-    "start_angle_deg": 202.2,
-    "surface_z": 4.0
-  },
-  {
-    "depth": 0.3,
-    "end_angle_deg": 247.8,
-    "inner_radius": 4.0,
-    "op": "engraved_divider",
-    "outer_radius": 22.0,
-    "start_angle_deg": 247.2,
-    "surface_z": 4.0
-  },
-  {
-    "depth": 0.3,
-    "end_angle_deg": 292.8,
-    "inner_radius": 4.0,
-    "op": "engraved_divider",
-    "outer_radius": 22.0,
-    "start_angle_deg": 292.2,
-    "surface_z": 4.0
-  },
-  {
-    "base_z": 3.4,
-    "end_angle_deg": 337.8,
-    "height": 0.4,
-    "inner_radius": 4.0,
-    "op": "raised_divider",
-    "outer_radius": 22.0,
-    "start_angle_deg": 337.2
-  },
-  {
-    "depth": 0.3,
-    "end_angle_deg": 337.8,
-    "inner_radius": 4.0,
-    "op": "engraved_divider",
-    "outer_radius": 22.0,
-    "start_angle_deg": 337.2,
-    "surface_z": 4.0
-  },
-  {
-    "depth": 0.3,
-    "end_angle_deg": 22.8,
-    "inner_radius": 22.0,
-    "op": "engraved_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 22.2,
-    "surface_z": 4.0
-  },
-  {
-    "depth": 0.3,
-    "end_angle_deg": 45.3,
-    "inner_radius": 22.0,
-    "op": "engraved_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 44.7,
-    "surface_z": 4.0
-  },
-  {
-    "depth": 0.3,
-    "end_angle_deg": 67.8,
-    "inner_radius": 22.0,
-    "op": "engraved_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 67.2,
-    "surface_z": 4.0
-  },
-  {
-    "depth": 0.3,
-    "end_angle_deg": 90.3,
-    "inner_radius": 22.0,
-    "op": "engraved_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 89.7,
-    "surface_z": 4.0
-  },
-  {
-    "base_z": 3.4,
-    "end_angle_deg": 112.8,
-    "height": 0.4,
-    "inner_radius": 22.0,
-    "op": "raised_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 112.2
-  },
-  {
-    "depth": 0.3,
-    "end_angle_deg": 112.8,
-    "inner_radius": 22.0,
-    "op": "engraved_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 112.2,
-    "surface_z": 4.0
-  },
-  {
-    "base_z": 3.4,
-    "end_angle_deg": 135.3,
-    "height": 0.4,
-    "inner_radius": 22.0,
-    "op": "raised_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 134.7
-  },
-  {
-    "base_z": 3.4,
-    "end_angle_deg": 157.8,
-    "height": 0.4,
-    "inner_radius": 22.0,
-    "op": "raised_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 157.2
-  },
-  {
-    "base_z": 3.4,
-    "end_angle_deg": 180.3,
-    "height": 0.4,
-    "inner_radius": 22.0,
-    "op": "raised_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 179.7
-  },
-  {
-    "base_z": 3.4,
-    "end_angle_deg": 202.8,
-    "height": 0.4,
-    "inner_radius": 22.0,
-    "op": "raised_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 202.2
-  },
-  {
-    "base_z": 3.4,
-    "end_angle_deg": 225.3,
-    "height": 0.4,
-    "inner_radius": 22.0,
-    "op": "raised_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 224.7
-  },
-  {
-    "base_z": 3.4,
-    "end_angle_deg": 247.8,
-    "height": 0.4,
-    "inner_radius": 22.0,
-    "op": "raised_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 247.2
-  },
-  {
-    "base_z": 3.4,
-    "end_angle_deg": 270.3,
-    "height": 0.4,
-    "inner_radius": 22.0,
-    "op": "raised_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 269.7
-  },
-  {
-    "base_z": 3.4,
-    "end_angle_deg": 292.8,
-    "height": 0.4,
-    "inner_radius": 22.0,
-    "op": "raised_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 292.2
-  },
-  {
-    "depth": 0.3,
-    "end_angle_deg": 292.8,
-    "inner_radius": 22.0,
-    "op": "engraved_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 292.2,
-    "surface_z": 4.0
-  },
-  {
-    "depth": 0.3,
-    "end_angle_deg": 315.3,
-    "inner_radius": 22.0,
-    "op": "engraved_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 314.7,
-    "surface_z": 4.0
-  },
-  {
-    "depth": 0.3,
-    "end_angle_deg": 337.8,
-    "inner_radius": 22.0,
-    "op": "engraved_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 337.2,
-    "surface_z": 4.0
-  },
-  {
-    "depth": 0.3,
-    "end_angle_deg": 0.3,
-    "inner_radius": 22.0,
-    "op": "engraved_divider",
-    "outer_radius": 38.0,
-    "start_angle_deg": 359.7,
-    "surface_z": 4.0
-  }
-]
+{
+  "counts": {
+    "CutSymbol": 12,
+    "EngravedDivider": 14,
+    "LowerField": 12,
+    "Prism": 24,
+    "RaisedDivider": 14,
+    "RaisedSymbol": 12
+  },
+  "implemented_ops": [
+    "CutSymbol",
+    "EngravedDivider",
+    "LowerField",
+    "Prism",
+    "RaisedDivider",
+    "RaisedSymbol"
+  ],
+  "not_yet_implemented": [],
+  "ops": [
+    {
+      "angle_end_deg": 112.5,
+      "angle_start_deg": 67.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 90.0,
+      "inner_radius": 4.0,
+      "op": "prism",
+      "outer_radius": 22.0,
+      "span_deg": 45.0,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": 67.5,
+      "angle_start_deg": 22.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 45.0,
+      "inner_radius": 4.0,
+      "op": "prism",
+      "outer_radius": 22.0,
+      "span_deg": 45.0,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": 22.5,
+      "angle_start_deg": -22.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 0.0,
+      "inner_radius": 4.0,
+      "op": "prism",
+      "outer_radius": 22.0,
+      "span_deg": 45.0,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": -22.5,
+      "angle_start_deg": -67.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": -45.0,
+      "inner_radius": 4.0,
+      "op": "prism",
+      "outer_radius": 22.0,
+      "span_deg": 45.0,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": -67.5,
+      "angle_start_deg": -112.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": -90.0,
+      "inner_radius": 4.0,
+      "op": "prism",
+      "outer_radius": 22.0,
+      "span_deg": 45.0,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": -112.5,
+      "angle_start_deg": -157.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": -135.0,
+      "inner_radius": 4.0,
+      "op": "prism",
+      "outer_radius": 22.0,
+      "span_deg": 45.0,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": 202.5,
+      "angle_start_deg": 157.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 180.0,
+      "inner_radius": 4.0,
+      "op": "prism",
+      "outer_radius": 22.0,
+      "span_deg": 45.0,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": 157.5,
+      "angle_start_deg": 112.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 135.0,
+      "inner_radius": 4.0,
+      "op": "prism",
+      "outer_radius": 22.0,
+      "span_deg": 45.0,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": -135.0,
+      "angle_start_deg": -157.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": -146.25,
+      "inner_radius": 22.0,
+      "op": "prism",
+      "outer_radius": 38.0,
+      "span_deg": 22.5,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": -112.5,
+      "angle_start_deg": -135.0,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": -123.75,
+      "inner_radius": 22.0,
+      "op": "prism",
+      "outer_radius": 38.0,
+      "span_deg": 22.5,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": -90.0,
+      "angle_start_deg": -112.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": -101.25,
+      "inner_radius": 22.0,
+      "op": "prism",
+      "outer_radius": 38.0,
+      "span_deg": 22.5,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": -67.5,
+      "angle_start_deg": -90.0,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": -78.75,
+      "inner_radius": 22.0,
+      "op": "prism",
+      "outer_radius": 38.0,
+      "span_deg": 22.5,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": -45.0,
+      "angle_start_deg": -67.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": -56.25,
+      "inner_radius": 22.0,
+      "op": "prism",
+      "outer_radius": 38.0,
+      "span_deg": 22.5,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": -22.5,
+      "angle_start_deg": -45.0,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": -33.75,
+      "inner_radius": 22.0,
+      "op": "prism",
+      "outer_radius": 38.0,
+      "span_deg": 22.5,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": 0.0,
+      "angle_start_deg": -22.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": -11.25,
+      "inner_radius": 22.0,
+      "op": "prism",
+      "outer_radius": 38.0,
+      "span_deg": 22.5,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": 22.5,
+      "angle_start_deg": 0.0,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 11.25,
+      "inner_radius": 22.0,
+      "op": "prism",
+      "outer_radius": 38.0,
+      "span_deg": 22.5,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": 45.0,
+      "angle_start_deg": 22.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 33.75,
+      "inner_radius": 22.0,
+      "op": "prism",
+      "outer_radius": 38.0,
+      "span_deg": 22.5,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": 67.5,
+      "angle_start_deg": 45.0,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 56.25,
+      "inner_radius": 22.0,
+      "op": "prism",
+      "outer_radius": 38.0,
+      "span_deg": 22.5,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": 90.0,
+      "angle_start_deg": 67.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 78.75,
+      "inner_radius": 22.0,
+      "op": "prism",
+      "outer_radius": 38.0,
+      "span_deg": 22.5,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": 112.5,
+      "angle_start_deg": 90.0,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 101.25,
+      "inner_radius": 22.0,
+      "op": "prism",
+      "outer_radius": 38.0,
+      "span_deg": 22.5,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": 135.0,
+      "angle_start_deg": 112.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 123.75,
+      "inner_radius": 22.0,
+      "op": "prism",
+      "outer_radius": 38.0,
+      "span_deg": 22.5,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": 157.5,
+      "angle_start_deg": 135.0,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 146.25,
+      "inner_radius": 22.0,
+      "op": "prism",
+      "outer_radius": 38.0,
+      "span_deg": 22.5,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": 180.0,
+      "angle_start_deg": 157.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 168.75,
+      "inner_radius": 22.0,
+      "op": "prism",
+      "outer_radius": 38.0,
+      "span_deg": 22.5,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": 202.5,
+      "angle_start_deg": 180.0,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 191.25,
+      "inner_radius": 22.0,
+      "op": "prism",
+      "outer_radius": 38.0,
+      "span_deg": 22.5,
+      "z0": 0.0,
+      "z1": 4.0
+    },
+    {
+      "angle_end_deg": 112.5,
+      "angle_start_deg": 67.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 90.0,
+      "depth": 0.6,
+      "inner_radius": 4.0,
+      "op": "lower_field",
+      "outer_radius": 22.0,
+      "owner_cell_id": "inner:00",
+      "span_deg": 45.0,
+      "surface_z": 4.0
+    },
+    {
+      "angle_end_deg": 67.5,
+      "angle_start_deg": 22.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 45.0,
+      "depth": 0.6,
+      "inner_radius": 4.0,
+      "op": "lower_field",
+      "outer_radius": 22.0,
+      "owner_cell_id": "inner:01",
+      "span_deg": 45.0,
+      "surface_z": 4.0
+    },
+    {
+      "angle_end_deg": 22.5,
+      "angle_start_deg": -22.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 0.0,
+      "depth": 0.6,
+      "inner_radius": 4.0,
+      "op": "lower_field",
+      "outer_radius": 22.0,
+      "owner_cell_id": "inner:02",
+      "span_deg": 45.0,
+      "surface_z": 4.0
+    },
+    {
+      "angle_end_deg": -22.5,
+      "angle_start_deg": -67.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": -45.0,
+      "depth": 0.6,
+      "inner_radius": 4.0,
+      "op": "lower_field",
+      "outer_radius": 22.0,
+      "owner_cell_id": "inner:03",
+      "span_deg": 45.0,
+      "surface_z": 4.0
+    },
+    {
+      "angle_end_deg": -135.0,
+      "angle_start_deg": -157.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": -146.25,
+      "depth": 0.6,
+      "inner_radius": 22.0,
+      "op": "lower_field",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:00",
+      "span_deg": 22.5,
+      "surface_z": 4.0
+    },
+    {
+      "angle_end_deg": -112.5,
+      "angle_start_deg": -135.0,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": -123.75,
+      "depth": 0.6,
+      "inner_radius": 22.0,
+      "op": "lower_field",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:01",
+      "span_deg": 22.5,
+      "surface_z": 4.0
+    },
+    {
+      "angle_end_deg": -90.0,
+      "angle_start_deg": -112.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": -101.25,
+      "depth": 0.6,
+      "inner_radius": 22.0,
+      "op": "lower_field",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:02",
+      "span_deg": 22.5,
+      "surface_z": 4.0
+    },
+    {
+      "angle_end_deg": -67.5,
+      "angle_start_deg": -90.0,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": -78.75,
+      "depth": 0.6,
+      "inner_radius": 22.0,
+      "op": "lower_field",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:03",
+      "span_deg": 22.5,
+      "surface_z": 4.0
+    },
+    {
+      "angle_end_deg": 135.0,
+      "angle_start_deg": 112.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 123.75,
+      "depth": 0.6,
+      "inner_radius": 22.0,
+      "op": "lower_field",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:12",
+      "span_deg": 22.5,
+      "surface_z": 4.0
+    },
+    {
+      "angle_end_deg": 157.5,
+      "angle_start_deg": 135.0,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 146.25,
+      "depth": 0.6,
+      "inner_radius": 22.0,
+      "op": "lower_field",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:13",
+      "span_deg": 22.5,
+      "surface_z": 4.0
+    },
+    {
+      "angle_end_deg": 180.0,
+      "angle_start_deg": 157.5,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 168.75,
+      "depth": 0.6,
+      "inner_radius": 22.0,
+      "op": "lower_field",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:14",
+      "span_deg": 22.5,
+      "surface_z": 4.0
+    },
+    {
+      "angle_end_deg": 202.5,
+      "angle_start_deg": 180.0,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "center_angle_deg": 191.25,
+      "depth": 0.6,
+      "inner_radius": 22.0,
+      "op": "lower_field",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:15",
+      "span_deg": 22.5,
+      "surface_z": 4.0
+    },
+    {
+      "base_z": 3.4,
+      "center_angle_deg": 90.0,
+      "center_radius": 13.0,
+      "height": 0.8,
+      "local_top_angle_deg": -90.0,
+      "op": "raised_symbol",
+      "owner_cell_id": "inner:00",
+      "size_S": 6.0,
+      "symbol_kind": "TRIANGLE"
+    },
+    {
+      "base_z": 3.4,
+      "center_angle_deg": 45.0,
+      "center_radius": 13.0,
+      "height": 0.8,
+      "local_top_angle_deg": -135.0,
+      "op": "raised_symbol",
+      "owner_cell_id": "inner:01",
+      "size_S": 6.0,
+      "symbol_kind": "CIRCLE"
+    },
+    {
+      "base_z": 3.4,
+      "center_angle_deg": 0.0,
+      "center_radius": 13.0,
+      "height": 0.8,
+      "local_top_angle_deg": 180.0,
+      "op": "raised_symbol",
+      "owner_cell_id": "inner:02",
+      "size_S": 6.0,
+      "symbol_kind": "SQUARE"
+    },
+    {
+      "base_z": 3.4,
+      "center_angle_deg": -45.0,
+      "center_radius": 13.0,
+      "height": 0.8,
+      "local_top_angle_deg": 135.0,
+      "op": "raised_symbol",
+      "owner_cell_id": "inner:03",
+      "size_S": 6.0,
+      "symbol_kind": "ETHICS"
+    },
+    {
+      "center_angle_deg": -90.0,
+      "center_radius": 13.0,
+      "depth": 0.6,
+      "local_top_angle_deg": 90.0,
+      "op": "cut_symbol",
+      "owner_cell_id": "inner:04",
+      "size_S": 6.0,
+      "surface_z": 4.0,
+      "symbol_kind": "TRIANGLE"
+    },
+    {
+      "center_angle_deg": -135.0,
+      "center_radius": 13.0,
+      "depth": 0.6,
+      "local_top_angle_deg": 45.0,
+      "op": "cut_symbol",
+      "owner_cell_id": "inner:05",
+      "size_S": 6.0,
+      "surface_z": 4.0,
+      "symbol_kind": "CIRCLE"
+    },
+    {
+      "center_angle_deg": 180.0,
+      "center_radius": 13.0,
+      "depth": 0.6,
+      "local_top_angle_deg": 0.0,
+      "op": "cut_symbol",
+      "owner_cell_id": "inner:06",
+      "size_S": 6.0,
+      "surface_z": 4.0,
+      "symbol_kind": "SQUARE"
+    },
+    {
+      "center_angle_deg": 135.0,
+      "center_radius": 13.0,
+      "depth": 0.6,
+      "local_top_angle_deg": -45.0,
+      "op": "cut_symbol",
+      "owner_cell_id": "inner:07",
+      "size_S": 6.0,
+      "surface_z": 4.0,
+      "symbol_kind": "ETHICS"
+    },
+    {
+      "base_z": 3.4,
+      "center_angle_deg": -146.25,
+      "center_radius": 30.0,
+      "height": 0.8,
+      "local_top_angle_deg": 33.75,
+      "op": "raised_symbol",
+      "owner_cell_id": "outer:00",
+      "size_S": 3.5,
+      "symbol_kind": "SQUARE"
+    },
+    {
+      "base_z": 3.4,
+      "center_angle_deg": -123.75,
+      "center_radius": 30.0,
+      "height": 0.8,
+      "local_top_angle_deg": 56.25,
+      "op": "raised_symbol",
+      "owner_cell_id": "outer:01",
+      "size_S": 3.5,
+      "symbol_kind": "ETHICS"
+    },
+    {
+      "base_z": 3.4,
+      "center_angle_deg": -101.25,
+      "center_radius": 30.0,
+      "height": 0.8,
+      "local_top_angle_deg": 78.75,
+      "op": "raised_symbol",
+      "owner_cell_id": "outer:02",
+      "size_S": 3.5,
+      "symbol_kind": "SQUARE"
+    },
+    {
+      "base_z": 3.4,
+      "center_angle_deg": -78.75,
+      "center_radius": 30.0,
+      "height": 0.8,
+      "local_top_angle_deg": 101.25,
+      "op": "raised_symbol",
+      "owner_cell_id": "outer:03",
+      "size_S": 3.5,
+      "symbol_kind": "ETHICS"
+    },
+    {
+      "center_angle_deg": -56.25,
+      "center_radius": 30.0,
+      "depth": 0.6,
+      "local_top_angle_deg": 123.75,
+      "op": "cut_symbol",
+      "owner_cell_id": "outer:04",
+      "size_S": 3.5,
+      "surface_z": 4.0,
+      "symbol_kind": "TRIANGLE"
+    },
+    {
+      "center_angle_deg": -33.75,
+      "center_radius": 30.0,
+      "depth": 0.6,
+      "local_top_angle_deg": 146.25,
+      "op": "cut_symbol",
+      "owner_cell_id": "outer:05",
+      "size_S": 3.5,
+      "surface_z": 4.0,
+      "symbol_kind": "CIRCLE"
+    },
+    {
+      "center_angle_deg": -11.25,
+      "center_radius": 30.0,
+      "depth": 0.6,
+      "local_top_angle_deg": 168.75,
+      "op": "cut_symbol",
+      "owner_cell_id": "outer:06",
+      "size_S": 3.5,
+      "surface_z": 4.0,
+      "symbol_kind": "TRIANGLE"
+    },
+    {
+      "center_angle_deg": 11.25,
+      "center_radius": 30.0,
+      "depth": 0.6,
+      "local_top_angle_deg": -168.75,
+      "op": "cut_symbol",
+      "owner_cell_id": "outer:07",
+      "size_S": 3.5,
+      "surface_z": 4.0,
+      "symbol_kind": "CIRCLE"
+    },
+    {
+      "center_angle_deg": 33.75,
+      "center_radius": 30.0,
+      "depth": 0.6,
+      "local_top_angle_deg": -146.25,
+      "op": "cut_symbol",
+      "owner_cell_id": "outer:08",
+      "size_S": 3.5,
+      "surface_z": 4.0,
+      "symbol_kind": "SQUARE"
+    },
+    {
+      "center_angle_deg": 56.25,
+      "center_radius": 30.0,
+      "depth": 0.6,
+      "local_top_angle_deg": -123.75,
+      "op": "cut_symbol",
+      "owner_cell_id": "outer:09",
+      "size_S": 3.5,
+      "surface_z": 4.0,
+      "symbol_kind": "ETHICS"
+    },
+    {
+      "center_angle_deg": 78.75,
+      "center_radius": 30.0,
+      "depth": 0.6,
+      "local_top_angle_deg": -101.25,
+      "op": "cut_symbol",
+      "owner_cell_id": "outer:10",
+      "size_S": 3.5,
+      "surface_z": 4.0,
+      "symbol_kind": "SQUARE"
+    },
+    {
+      "center_angle_deg": 101.25,
+      "center_radius": 30.0,
+      "depth": 0.6,
+      "local_top_angle_deg": -78.75,
+      "op": "cut_symbol",
+      "owner_cell_id": "outer:11",
+      "size_S": 3.5,
+      "surface_z": 4.0,
+      "symbol_kind": "ETHICS"
+    },
+    {
+      "base_z": 3.4,
+      "center_angle_deg": 123.75,
+      "center_radius": 30.0,
+      "height": 0.8,
+      "local_top_angle_deg": -56.25,
+      "op": "raised_symbol",
+      "owner_cell_id": "outer:12",
+      "size_S": 3.5,
+      "symbol_kind": "TRIANGLE"
+    },
+    {
+      "base_z": 3.4,
+      "center_angle_deg": 146.25,
+      "center_radius": 30.0,
+      "height": 0.8,
+      "local_top_angle_deg": -33.75,
+      "op": "raised_symbol",
+      "owner_cell_id": "outer:13",
+      "size_S": 3.5,
+      "symbol_kind": "CIRCLE"
+    },
+    {
+      "base_z": 3.4,
+      "center_angle_deg": 168.75,
+      "center_radius": 30.0,
+      "height": 0.8,
+      "local_top_angle_deg": -11.25,
+      "op": "raised_symbol",
+      "owner_cell_id": "outer:14",
+      "size_S": 3.5,
+      "symbol_kind": "TRIANGLE"
+    },
+    {
+      "base_z": 3.4,
+      "center_angle_deg": 191.25,
+      "center_radius": 30.0,
+      "height": 0.8,
+      "local_top_angle_deg": 11.25,
+      "op": "raised_symbol",
+      "owner_cell_id": "outer:15",
+      "size_S": 3.5,
+      "symbol_kind": "CIRCLE"
+    },
+    {
+      "angle_end_deg": 67.8,
+      "angle_start_deg": 67.2,
+      "base_z": 3.4,
+      "boundary_id": "inner-boundary:00",
+      "center_angle_deg": 67.5,
+      "height": 0.4,
+      "inner_radius": 4.0,
+      "op": "raised_divider",
+      "outer_radius": 22.0,
+      "owner_cell_id": "inner:00",
+      "ring": "inner",
+      "side": "A",
+      "span_deg": 0.6,
+      "treatment": "RAISED_RIB"
+    },
+    {
+      "angle_end_deg": 22.8,
+      "angle_start_deg": 22.2,
+      "base_z": 3.4,
+      "boundary_id": "inner-boundary:01",
+      "center_angle_deg": 22.5,
+      "height": 0.4,
+      "inner_radius": 4.0,
+      "op": "raised_divider",
+      "outer_radius": 22.0,
+      "owner_cell_id": "inner:01",
+      "ring": "inner",
+      "side": "A",
+      "span_deg": 0.6,
+      "treatment": "RAISED_RIB"
+    },
+    {
+      "angle_end_deg": -22.2,
+      "angle_start_deg": -22.8,
+      "base_z": 3.4,
+      "boundary_id": "inner-boundary:02",
+      "center_angle_deg": -22.5,
+      "height": 0.4,
+      "inner_radius": 4.0,
+      "op": "raised_divider",
+      "outer_radius": 22.0,
+      "owner_cell_id": "inner:02",
+      "ring": "inner",
+      "side": "A",
+      "span_deg": 0.6,
+      "treatment": "RAISED_RIB"
+    },
+    {
+      "angle_end_deg": -67.5,
+      "angle_start_deg": -67.8,
+      "base_z": 3.4,
+      "boundary_id": "inner-boundary:03",
+      "center_angle_deg": -67.65,
+      "height": 0.4,
+      "inner_radius": 4.0,
+      "op": "raised_divider",
+      "outer_radius": 22.0,
+      "owner_cell_id": "inner:03",
+      "ring": "inner",
+      "side": "A",
+      "span_deg": 0.29999999999999716,
+      "treatment": "RAISED_RIB"
+    },
+    {
+      "angle_end_deg": -67.2,
+      "angle_start_deg": -67.5,
+      "boundary_id": "inner-boundary:03",
+      "center_angle_deg": -67.35,
+      "depth": 0.3,
+      "inner_radius": 4.0,
+      "op": "engraved_divider",
+      "outer_radius": 22.0,
+      "owner_cell_id": "inner:04",
+      "ring": "inner",
+      "side": "B",
+      "span_deg": 0.29999999999999716,
+      "surface_z": 4.0,
+      "treatment": "ENGRAVED_GROOVE"
+    },
+    {
+      "angle_end_deg": -112.2,
+      "angle_start_deg": -112.8,
+      "boundary_id": "inner-boundary:04",
+      "center_angle_deg": -112.5,
+      "depth": 0.3,
+      "inner_radius": 4.0,
+      "op": "engraved_divider",
+      "outer_radius": 22.0,
+      "owner_cell_id": "inner:04",
+      "ring": "inner",
+      "side": "A",
+      "span_deg": 0.6,
+      "surface_z": 4.0,
+      "treatment": "ENGRAVED_GROOVE"
+    },
+    {
+      "angle_end_deg": -157.2,
+      "angle_start_deg": -157.8,
+      "boundary_id": "inner-boundary:05",
+      "center_angle_deg": -157.5,
+      "depth": 0.3,
+      "inner_radius": 4.0,
+      "op": "engraved_divider",
+      "outer_radius": 22.0,
+      "owner_cell_id": "inner:05",
+      "ring": "inner",
+      "side": "A",
+      "span_deg": 0.6,
+      "surface_z": 4.0,
+      "treatment": "ENGRAVED_GROOVE"
+    },
+    {
+      "angle_end_deg": 157.8,
+      "angle_start_deg": 157.2,
+      "boundary_id": "inner-boundary:06",
+      "center_angle_deg": 157.5,
+      "depth": 0.3,
+      "inner_radius": 4.0,
+      "op": "engraved_divider",
+      "outer_radius": 22.0,
+      "owner_cell_id": "inner:06",
+      "ring": "inner",
+      "side": "A",
+      "span_deg": 0.6,
+      "surface_z": 4.0,
+      "treatment": "ENGRAVED_GROOVE"
+    },
+    {
+      "angle_end_deg": 112.8,
+      "angle_start_deg": 112.5,
+      "base_z": 3.4,
+      "boundary_id": "inner-boundary:07",
+      "center_angle_deg": 112.65,
+      "height": 0.4,
+      "inner_radius": 4.0,
+      "op": "raised_divider",
+      "outer_radius": 22.0,
+      "owner_cell_id": "inner:00",
+      "ring": "inner",
+      "side": "B",
+      "span_deg": 0.29999999999999716,
+      "treatment": "RAISED_RIB"
+    },
+    {
+      "angle_end_deg": 112.5,
+      "angle_start_deg": 112.2,
+      "boundary_id": "inner-boundary:07",
+      "center_angle_deg": 112.35,
+      "depth": 0.3,
+      "inner_radius": 4.0,
+      "op": "engraved_divider",
+      "outer_radius": 22.0,
+      "owner_cell_id": "inner:07",
+      "ring": "inner",
+      "side": "A",
+      "span_deg": 0.29999999999999716,
+      "surface_z": 4.0,
+      "treatment": "ENGRAVED_GROOVE"
+    },
+    {
+      "angle_end_deg": -134.7,
+      "angle_start_deg": -135.3,
+      "base_z": 3.4,
+      "boundary_id": "outer-boundary:00",
+      "center_angle_deg": -135.0,
+      "height": 0.4,
+      "inner_radius": 22.0,
+      "op": "raised_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:00",
+      "ring": "outer",
+      "side": "A",
+      "span_deg": 0.6,
+      "treatment": "RAISED_RIB"
+    },
+    {
+      "angle_end_deg": -112.2,
+      "angle_start_deg": -112.8,
+      "base_z": 3.4,
+      "boundary_id": "outer-boundary:01",
+      "center_angle_deg": -112.5,
+      "height": 0.4,
+      "inner_radius": 22.0,
+      "op": "raised_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:01",
+      "ring": "outer",
+      "side": "A",
+      "span_deg": 0.6,
+      "treatment": "RAISED_RIB"
+    },
+    {
+      "angle_end_deg": -89.7,
+      "angle_start_deg": -90.3,
+      "base_z": 3.4,
+      "boundary_id": "outer-boundary:02",
+      "center_angle_deg": -90.0,
+      "height": 0.4,
+      "inner_radius": 22.0,
+      "op": "raised_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:02",
+      "ring": "outer",
+      "side": "A",
+      "span_deg": 0.6,
+      "treatment": "RAISED_RIB"
+    },
+    {
+      "angle_end_deg": -67.5,
+      "angle_start_deg": -67.8,
+      "base_z": 3.4,
+      "boundary_id": "outer-boundary:03",
+      "center_angle_deg": -67.65,
+      "height": 0.4,
+      "inner_radius": 22.0,
+      "op": "raised_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:03",
+      "ring": "outer",
+      "side": "A",
+      "span_deg": 0.29999999999999716,
+      "treatment": "RAISED_RIB"
+    },
+    {
+      "angle_end_deg": -67.2,
+      "angle_start_deg": -67.5,
+      "boundary_id": "outer-boundary:03",
+      "center_angle_deg": -67.35,
+      "depth": 0.3,
+      "inner_radius": 22.0,
+      "op": "engraved_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:04",
+      "ring": "outer",
+      "side": "B",
+      "span_deg": 0.29999999999999716,
+      "surface_z": 4.0,
+      "treatment": "ENGRAVED_GROOVE"
+    },
+    {
+      "angle_end_deg": -44.7,
+      "angle_start_deg": -45.3,
+      "boundary_id": "outer-boundary:04",
+      "center_angle_deg": -45.0,
+      "depth": 0.3,
+      "inner_radius": 22.0,
+      "op": "engraved_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:04",
+      "ring": "outer",
+      "side": "A",
+      "span_deg": 0.6,
+      "surface_z": 4.0,
+      "treatment": "ENGRAVED_GROOVE"
+    },
+    {
+      "angle_end_deg": -22.2,
+      "angle_start_deg": -22.8,
+      "boundary_id": "outer-boundary:05",
+      "center_angle_deg": -22.5,
+      "depth": 0.3,
+      "inner_radius": 22.0,
+      "op": "engraved_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:05",
+      "ring": "outer",
+      "side": "A",
+      "span_deg": 0.6,
+      "surface_z": 4.0,
+      "treatment": "ENGRAVED_GROOVE"
+    },
+    {
+      "angle_end_deg": 0.3,
+      "angle_start_deg": -0.3,
+      "boundary_id": "outer-boundary:06",
+      "center_angle_deg": 0.0,
+      "depth": 0.3,
+      "inner_radius": 22.0,
+      "op": "engraved_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:06",
+      "ring": "outer",
+      "side": "A",
+      "span_deg": 0.6,
+      "surface_z": 4.0,
+      "treatment": "ENGRAVED_GROOVE"
+    },
+    {
+      "angle_end_deg": 22.8,
+      "angle_start_deg": 22.2,
+      "boundary_id": "outer-boundary:07",
+      "center_angle_deg": 22.5,
+      "depth": 0.3,
+      "inner_radius": 22.0,
+      "op": "engraved_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:07",
+      "ring": "outer",
+      "side": "A",
+      "span_deg": 0.6,
+      "surface_z": 4.0,
+      "treatment": "ENGRAVED_GROOVE"
+    },
+    {
+      "angle_end_deg": 45.3,
+      "angle_start_deg": 44.7,
+      "boundary_id": "outer-boundary:08",
+      "center_angle_deg": 45.0,
+      "depth": 0.3,
+      "inner_radius": 22.0,
+      "op": "engraved_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:08",
+      "ring": "outer",
+      "side": "A",
+      "span_deg": 0.6,
+      "surface_z": 4.0,
+      "treatment": "ENGRAVED_GROOVE"
+    },
+    {
+      "angle_end_deg": 67.8,
+      "angle_start_deg": 67.2,
+      "boundary_id": "outer-boundary:09",
+      "center_angle_deg": 67.5,
+      "depth": 0.3,
+      "inner_radius": 22.0,
+      "op": "engraved_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:09",
+      "ring": "outer",
+      "side": "A",
+      "span_deg": 0.6,
+      "surface_z": 4.0,
+      "treatment": "ENGRAVED_GROOVE"
+    },
+    {
+      "angle_end_deg": 90.3,
+      "angle_start_deg": 89.7,
+      "boundary_id": "outer-boundary:10",
+      "center_angle_deg": 90.0,
+      "depth": 0.3,
+      "inner_radius": 22.0,
+      "op": "engraved_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:10",
+      "ring": "outer",
+      "side": "A",
+      "span_deg": 0.6,
+      "surface_z": 4.0,
+      "treatment": "ENGRAVED_GROOVE"
+    },
+    {
+      "angle_end_deg": 112.8,
+      "angle_start_deg": 112.5,
+      "base_z": 3.4,
+      "boundary_id": "outer-boundary:11",
+      "center_angle_deg": 112.65,
+      "height": 0.4,
+      "inner_radius": 22.0,
+      "op": "raised_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:12",
+      "ring": "outer",
+      "side": "B",
+      "span_deg": 0.29999999999999716,
+      "treatment": "RAISED_RIB"
+    },
+    {
+      "angle_end_deg": 112.5,
+      "angle_start_deg": 112.2,
+      "boundary_id": "outer-boundary:11",
+      "center_angle_deg": 112.35,
+      "depth": 0.3,
+      "inner_radius": 22.0,
+      "op": "engraved_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:11",
+      "ring": "outer",
+      "side": "A",
+      "span_deg": 0.29999999999999716,
+      "surface_z": 4.0,
+      "treatment": "ENGRAVED_GROOVE"
+    },
+    {
+      "angle_end_deg": 135.3,
+      "angle_start_deg": 134.7,
+      "base_z": 3.4,
+      "boundary_id": "outer-boundary:12",
+      "center_angle_deg": 135.0,
+      "height": 0.4,
+      "inner_radius": 22.0,
+      "op": "raised_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:12",
+      "ring": "outer",
+      "side": "A",
+      "span_deg": 0.6,
+      "treatment": "RAISED_RIB"
+    },
+    {
+      "angle_end_deg": 157.8,
+      "angle_start_deg": 157.2,
+      "base_z": 3.4,
+      "boundary_id": "outer-boundary:13",
+      "center_angle_deg": 157.5,
+      "height": 0.4,
+      "inner_radius": 22.0,
+      "op": "raised_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:13",
+      "ring": "outer",
+      "side": "A",
+      "span_deg": 0.6,
+      "treatment": "RAISED_RIB"
+    },
+    {
+      "angle_end_deg": 180.3,
+      "angle_start_deg": 179.7,
+      "base_z": 3.4,
+      "boundary_id": "outer-boundary:14",
+      "center_angle_deg": 180.0,
+      "height": 0.4,
+      "inner_radius": 22.0,
+      "op": "raised_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:14",
+      "ring": "outer",
+      "side": "A",
+      "span_deg": 0.6,
+      "treatment": "RAISED_RIB"
+    },
+    {
+      "angle_end_deg": 202.8,
+      "angle_start_deg": 202.2,
+      "base_z": 3.4,
+      "boundary_id": "outer-boundary:15",
+      "center_angle_deg": 202.5,
+      "height": 0.4,
+      "inner_radius": 22.0,
+      "op": "raised_divider",
+      "outer_radius": 38.0,
+      "owner_cell_id": "outer:15",
+      "ring": "outer",
+      "side": "A",
+      "span_deg": 0.6,
+      "treatment": "RAISED_RIB"
+    }
+  ]
+}

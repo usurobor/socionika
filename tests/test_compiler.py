@@ -150,15 +150,30 @@ class TestPolarityInvariants(unittest.TestCase):
 
 
 class TestGoldenStream(unittest.TestCase):
+    """The golden fixture is the full stub-executor dump produced by the CLI
+    (counts + ops list + implemented_ops + not_yet_implemented)."""
+
     def test_matches_golden_fixture(self) -> None:
+        from socionics_medallion.executor import StubExecutor
+
         path = _fixture_path()
         self.assertTrue(os.path.exists(path), f"golden file missing: {path}")
         with open(path, "r", encoding="utf-8") as f:
             golden = json.load(f)
         plan = build_plan()
         ops = compile_medallion(plan)
-        compiled = [ir.op_to_dict(o) for o in ops]
-        self.assertEqual(compiled, golden)
+        # The stub dump is the contract — including counts and the implemented-
+        # ops projection. Compare it apples-to-apples.
+        produced = StubExecutor().execute(ops)
+        self.assertEqual(produced, golden)
+
+    def test_golden_ops_match_compile_directly(self) -> None:
+        path = _fixture_path()
+        with open(path, "r", encoding="utf-8") as f:
+            golden = json.load(f)
+        plan = build_plan()
+        compiled = [ir.op_to_dict(o) for o in compile_medallion(plan)]
+        self.assertEqual(compiled, golden["ops"])
 
 
 # ---------------------------------------------------------------------------
