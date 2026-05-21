@@ -1,0 +1,2 @@
+# socionika
+Practical socionika
