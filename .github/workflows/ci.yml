@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+
+jobs:
+  tests-no-cadquery:
+    name: Tests (no CadQuery)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify cadquery is absent
+        run: |
+          python -c "import importlib.util; assert importlib.util.find_spec('cadquery') is None, 'cadquery must not be installed in this job'"
+      - name: Run unit tests
+        run: |
+          python -m unittest discover -v tests
+
+  tests-with-cadquery:
+    name: Tests (with CadQuery)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install CadQuery
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements-cadquery.txt
+      - name: Run unit tests
+        run: |
+          python -m unittest discover -v tests
