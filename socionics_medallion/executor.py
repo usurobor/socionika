@@ -1,8 +1,34 @@
 """Executor protocol + StubExecutor (CadQuery-free) + CadQueryExecutor.
 
 CadQuery may only be imported lazily inside :class:`CadQueryExecutor`
-methods. A module-level ``import cadquery`` is forbidden and verified by
-tests.
+methods (and inside the lazy export/round-trip helpers below). A
+module-level ``import cadquery`` is forbidden and verified by tests.
+
+Boolean union strategy (issue #5 AC1)
+-------------------------------------
+The canonical compiler emits sector prisms cell-by-cell (24 sector cells)
+followed by lowered-field cuts, owner-scoped raised/cut symbols, and
+owner-scoped raised/engraved dividers. :meth:`CadQueryExecutor.execute`
+unions every additive op into the running accumulator and subtracts every
+subtractive op from it. After every op has been processed,
+:meth:`CadQueryExecutor.build_solid` extracts the single underlying
+``cadquery.Solid`` from the accumulator's compound.
+
+The chosen strategy is **single connected solid**: the accumulator is
+expected to collapse to ``len(compound.Solids()) == 1`` after the full
+canonical stream. If a future stream extension introduces a topologically
+disjoint feature (e.g. a free-standing bail or a loose insert), the
+executor MUST surface that as named debt in this docstring before
+silently relaxing the single-body assertion — the contract is
+load-bearing for AC1/AC4 round-trip validity.
+
+Round-trip validation (issue #5 AC4)
+------------------------------------
+:func:`reimport_step` re-loads a STEP file via ``cadquery.importers`` and
+:func:`compare_solids` produces a :class:`RoundTripReport` with the
+maximum bounding-box coordinate delta (mm) and the absolute relative
+volume delta. Tolerances live in the test module, not here — this layer
+just reports the numbers.
 """
 
 from __future__ import annotations
@@ -42,6 +68,30 @@ class NotYetImplemented(Exception):
         self.op = op
         super().__init__(
             f"CadQueryExecutor has no implementation for {type(op).__name__}"
+        )
+
+
+class EmptySolidError(RuntimeError):
+    """Raised when :meth:`CadQueryExecutor.build_solid` has no accumulator.
+
+    Surfaces as a deterministic failure rather than a ``None`` propagation
+    into the export path.
+    """
+
+
+class MultiBodySolidError(RuntimeError):
+    """Raised when the accumulator collapses to more than one solid body.
+
+    Triggered by :meth:`CadQueryExecutor.build_solid` when the canonical
+    stream produces a compound whose :py:meth:`Solids` returns more than
+    one body. See the module docstring for the documented strategy.
+    """
+
+    def __init__(self, n_bodies: int):
+        self.n_bodies = n_bodies
+        super().__init__(
+            f"executor produced {n_bodies} disconnected solids; "
+            "expected exactly 1 (see module docstring AC1)"
         )
 
 
@@ -140,7 +190,44 @@ class CadQueryExecutor:
             solid = handler(op, solid)
             result.processed[type(op).__name__] += 1
         result.solid = solid
+        self._last_result = result
         return result
+
+    # -- finalization / export ---------------------------------------------
+    def build_solid(self) -> Any:
+        """Return the accumulator collapsed to a single ``cadquery.Solid``.
+
+        Must be called after :meth:`execute`. Raises:
+
+        * :class:`EmptySolidError` if no op produced geometry.
+        * :class:`MultiBodySolidError` if the accumulator is multi-body
+          (see module docstring for AC1 strategy).
+        """
+        result = getattr(self, "_last_result", None)
+        if result is None or result.solid is None:
+            raise EmptySolidError(
+                "build_solid() requires a prior execute() with at least "
+                "one additive op"
+            )
+        compound = result.solid.val()
+        bodies = compound.Solids()
+        if len(bodies) != 1:
+            raise MultiBodySolidError(len(bodies))
+        return bodies[0]
+
+    def export_step(self, solid: Any, path: str) -> None:
+        """Write ``solid`` to ``path`` as a STEP (ISO-10303-21) file."""
+        solid.exportStep(path)
+
+    def export_stl(self, solid: Any, path: str) -> None:
+        """Write ``solid`` to ``path`` as a binary STL file.
+
+        Uses CadQuery's high-level ``exporters.export`` which is stable
+        across releases and which always emits binary STL when the
+        target extension is ``.stl``.
+        """
+        cq = self._cq
+        cq.exporters.export(solid, path)
 
     # -- dispatch -----------------------------------------------------------
     def _dispatch(self, op: CadOp):
@@ -341,4 +428,75 @@ if IMPLEMENTED_OPS != ALL_OP_TYPES:  # pragma: no cover - structural invariant
     raise AssertionError(
         "CadQueryExecutor.IMPLEMENTED_OPS does not match ALL_OP_TYPES "
         f"(missing: {missing or '∅'}; extra: {extra or '∅'})"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Round-trip validation helpers (issue #5 AC4).
+# ---------------------------------------------------------------------------
+@dataclass(frozen=True, slots=True)
+class RoundTripReport:
+    """Comparison report between a source solid and its STEP re-import.
+
+    * ``source_volume``, ``imported_volume`` — CadQuery ``Volume()`` values
+      in mm³.
+    * ``volume_abs_delta`` — ``|source - imported|`` in mm³.
+    * ``volume_rel_delta`` — ``|source - imported| / |source|`` (unitless).
+    * ``bound_delta_mm`` — maximum absolute coordinate delta across the
+      six bounding-box scalars (xmin, ymin, zmin, xmax, ymax, zmax), in
+      mm.
+    """
+
+    source_volume: float
+    imported_volume: float
+    volume_abs_delta: float
+    volume_rel_delta: float
+    bound_delta_mm: float
+    source_bounds: tuple[float, float, float, float, float, float]
+    imported_bounds: tuple[float, float, float, float, float, float]
+
+
+def _bounds_tuple(solid: Any) -> tuple[float, float, float, float, float, float]:
+    bb = solid.BoundingBox()
+    return (bb.xmin, bb.ymin, bb.zmin, bb.xmax, bb.ymax, bb.zmax)
+
+
+def reimport_step(path: str) -> Any:
+    """Re-import a STEP file and return its single underlying ``Solid``.
+
+    Lazy CadQuery import — safe to call from test modules that may run in
+    CadQuery-free environments (those tests are ``skipUnless``-gated).
+    """
+    import cadquery as cq
+
+    wp = cq.importers.importStep(path)
+    bodies = wp.val().Solids()
+    if len(bodies) != 1:
+        raise MultiBodySolidError(len(bodies))
+    return bodies[0]
+
+
+def compare_solids(source: Any, imported: Any) -> RoundTripReport:
+    """Return a :class:`RoundTripReport` for ``source`` vs. ``imported``.
+
+    Both arguments are ``cadquery.Solid`` instances (or anything exposing
+    ``Volume()`` and ``BoundingBox()`` with the OCP API).
+    """
+    src_vol = float(source.Volume())
+    imp_vol = float(imported.Volume())
+    vol_abs = abs(src_vol - imp_vol)
+    if src_vol == 0.0:
+        raise ValueError("source solid has zero volume; round-trip ill-defined")
+    vol_rel = vol_abs / abs(src_vol)
+    src_b = _bounds_tuple(source)
+    imp_b = _bounds_tuple(imported)
+    bound_delta = max(abs(a - b) for a, b in zip(src_b, imp_b))
+    return RoundTripReport(
+        source_volume=src_vol,
+        imported_volume=imp_vol,
+        volume_abs_delta=vol_abs,
+        volume_rel_delta=vol_rel,
+        bound_delta_mm=bound_delta,
+        source_bounds=src_b,
+        imported_bounds=imp_b,
     )

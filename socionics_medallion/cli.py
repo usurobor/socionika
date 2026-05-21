@@ -118,25 +118,32 @@ def _run_cadquery(
     plan_name: str, step: str | None, stl: str | None, verbose: bool
 ) -> int:
     # Lazy import; this raises if cadquery isn't installed.
-    from socionics_medallion.executor import CadQueryExecutor
+    from socionics_medallion.executor import (
+        CadQueryExecutor,
+        EmptySolidError,
+        MultiBodySolidError,
+    )
 
     plan = _PLAN_FACTORIES[plan_name]()
     ops = compile_medallion(plan)
     executor = CadQueryExecutor()
     result = executor.execute(ops)
-    if result.solid is None:
-        sys.stderr.write("cadquery executor produced no solid.\n")
+    try:
+        solid = executor.build_solid()
+    except EmptySolidError as exc:
+        sys.stderr.write(f"cadquery executor produced no solid: {exc}\n")
         return 2
+    except MultiBodySolidError as exc:
+        sys.stderr.write(
+            f"cadquery executor produced multi-body output: {exc}\n"
+        )
+        return 3
     if step is not None:
         _ensure_parent_dir(step)
-        result.solid.val().exportStep(step)
+        executor.export_step(solid, step)
     if stl is not None:
         _ensure_parent_dir(stl)
-        # CadQuery's exporter signature differs across releases; do it via
-        # the high-level helper that's stable.
-        from cadquery import exporters  # type: ignore
-
-        exporters.export(result.solid, stl)
+        executor.export_stl(solid, stl)
     if verbose:
         sys.stdout.write(f"processed: {dict(result.processed)}\n")
     return 0
