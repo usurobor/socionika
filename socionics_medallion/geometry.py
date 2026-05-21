@@ -14,12 +14,28 @@ Profiles are CAD-agnostic — they are returned as :class:`Profile` records
 containing an ordered list of 2D vertices forming a closed polyline. The
 executor decides how to turn that polyline into a CadQuery feature.
 
-This is a Phase-1 stub: the public functions raise :class:`NotImplementedError`
-so the failing tests can drive Phase-2 implementation.
+Symbol shapes (operator's AC4 list, verbatim properties)
+--------------------------------------------------------
+* **square**: bounding box ``S × S``; area ``S²``.
+* **circle**: radius ``S/2``; diameter ``S``; inscribed in the ``S × S`` box.
+* **triangle**: equilateral; every vertex at distance ``S/2`` from the
+  centroid; apex aligned with local ``+Y``.
+* **ethics**: exact 3/4 square — bounding box ``S × S``, area ``3/4 · S²``,
+  upper-right local quadrant removed.
+
+World-frame placement (AC5)
+---------------------------
+A medallion cell sits at world angle ``θ`` on a positive radius. The
+symbol's local ``+Y`` (its "top") must point **toward the medallion
+center**, i.e. radially inward. The corresponding world vector is
+``(-cos θ, -sin θ)``. The perpendicular ``local_right`` is chosen so the
+frame is right-handed: rotating ``local_right`` by +90° (CCW) yields
+``local_top``. Solving gives ``local_right = (-sin θ, cos θ)``.
 """
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from typing import Tuple
 
@@ -43,58 +59,125 @@ class Profile:
         return (min(xs), min(ys), max(xs), max(ys))
 
 
+# ---------------------------------------------------------------------------
+# Profile constructors.
+# ---------------------------------------------------------------------------
 def square_profile(S: float) -> Profile:  # noqa: N803 — operator naming
     """Return the canonical square profile (``S × S``, centered at origin)."""
-    raise NotImplementedError("square_profile is not implemented yet")
+    if S <= 0.0:
+        raise ValueError("S must be positive")
+    h = S / 2.0
+    return Profile(
+        vertices=(
+            (-h, -h),
+            (h, -h),
+            (h, h),
+            (-h, h),
+        )
+    )
 
 
 def circle_profile(S: float, segments: int = 64) -> Profile:  # noqa: N803
     """Return a polygonal approximation of the canonical circle profile.
 
-    The circle is inscribed in the same ``S × S`` bounding box as
-    :func:`square_profile`. ``segments`` controls the polygonal resolution.
+    Inscribed in the same ``S × S`` bounding box as :func:`square_profile`
+    (radius ``S/2``). ``segments`` controls the polygonal resolution.
     """
-    raise NotImplementedError("circle_profile is not implemented yet")
+    if S <= 0.0:
+        raise ValueError("S must be positive")
+    if segments < 3:
+        raise ValueError("segments must be >= 3")
+    r = S / 2.0
+    verts: list[Tuple[float, float]] = []
+    for i in range(segments):
+        t = 2.0 * math.pi * i / segments
+        verts.append((r * math.cos(t), r * math.sin(t)))
+    return Profile(vertices=tuple(verts))
 
 
 def triangle_profile(S: float) -> Profile:  # noqa: N803
     """Return the canonical equilateral triangle profile.
 
     Every vertex is at distance ``S / 2`` from the origin (circumradius);
-    the apex aligns with local ``+Y`` (``local_top_vector``).
+    the apex aligns with local ``+Y`` (``local_top_vector``). Vertices are
+    listed CCW starting at the apex.
     """
-    raise NotImplementedError("triangle_profile is not implemented yet")
+    if S <= 0.0:
+        raise ValueError("S must be positive")
+    r = S / 2.0
+    # Apex on +Y; other two at ±120°.
+    angles_deg = (90.0, 210.0, 330.0)
+    verts = tuple(
+        (r * math.cos(math.radians(a)), r * math.sin(math.radians(a)))
+        for a in angles_deg
+    )
+    return Profile(vertices=verts)
 
 
 def ethics_profile(S: float) -> Profile:  # noqa: N803
     """Return the canonical "ethics" profile — an exact 3/4 square.
 
-    The bounding box is ``S × S``; the upper-right local quadrant is removed,
-    leaving an L-shape that is an exact 3/4 of the corresponding square.
+    The bounding box is ``S × S``; the upper-right local quadrant is
+    removed, leaving an L-shape of area ``3/4 · S²``. Vertices are listed
+    CCW starting at the lower-left corner.
     """
-    raise NotImplementedError("ethics_profile is not implemented yet")
+    if S <= 0.0:
+        raise ValueError("S must be positive")
+    h = S / 2.0
+    return Profile(
+        vertices=(
+            (-h, -h),
+            (h, -h),
+            (h, 0.0),
+            (0.0, 0.0),
+            (0.0, h),
+            (-h, h),
+        )
+    )
 
 
+# ---------------------------------------------------------------------------
+# Orientation helpers (AC5).
+# ---------------------------------------------------------------------------
 def local_top_vector_for_center_angle(center_angle_deg: float) -> Tuple[float, float]:
-    """Unit vector pointing from the symbol's cell-center toward the medallion center.
+    """Unit vector pointing from a symbol's cell-center toward the medallion center.
 
-    The symbol's cell sits at world angle ``center_angle_deg`` on a positive
-    radius. The vector from that cell back to the medallion's origin points
-    along ``-r̂``; in Cartesian terms that is ``(-cos(θ), -sin(θ))``.
+    A medallion cell at world angle ``θ`` sits at ``(r cos θ, r sin θ)``;
+    the inward direction is ``(-cos θ, -sin θ)``.
     """
-    raise NotImplementedError("local_top_vector_for_center_angle is not implemented yet")
+    t = math.radians(center_angle_deg)
+    return (-math.cos(t), -math.sin(t))
 
 
 def local_right_vector_for_center_angle(center_angle_deg: float) -> Tuple[float, float]:
-    """Unit vector perpendicular to :func:`local_top_vector_for_center_angle`.
+    """Unit vector forming a right-handed frame with :func:`local_top_vector_for_center_angle`.
 
-    Right-handed: rotating ``local_right`` by +90° (CCW) gives ``local_top``.
-    Equivalently, ``local_right = (sin(θ), -cos(θ))`` — the negative of the
-    angular (CCW) direction at angle ``θ``.
-
-    Wait — for the right-handed convention where ``+90° CCW`` on
-    ``local_right`` produces ``local_top``, and ``local_top = (-cos(θ),
-    -sin(θ))``, we need ``local_right = (-sin(θ), cos(θ))``. The
-    implementation will validate this against the AC4 orientation tests.
+    Rotating ``local_right`` by +90° (CCW) produces ``local_top``. With
+    ``local_top = (-cos θ, -sin θ)`` that gives ``local_right = (-sin θ, cos θ)``.
     """
-    raise NotImplementedError("local_right_vector_for_center_angle is not implemented yet")
+    t = math.radians(center_angle_deg)
+    return (-math.sin(t), math.cos(t))
+
+
+def place_profile_in_world(
+    profile: Profile,
+    center_xy: Tuple[float, float],
+    center_angle_deg: float,
+) -> Tuple[Tuple[float, float], ...]:
+    """Transform a local-frame profile to world coordinates.
+
+    The local ``+Y`` axis is rotated to align with the world inward vector
+    (``local_top_vector_for_center_angle``); the result is translated so
+    the local origin sits at ``center_xy``.
+    """
+    # Build the local→world rotation: local_x → local_right_world,
+    # local_y → local_top_world.
+    rx, ry = local_right_vector_for_center_angle(center_angle_deg)
+    tx, ty = local_top_vector_for_center_angle(center_angle_deg)
+    cx, cy = center_xy
+    out: list[Tuple[float, float]] = []
+    for x, y in profile.vertices:
+        wx = cx + x * rx + y * tx
+        wy = cy + x * ry + y * ty
+        out.append((wx, wy))
+    return tuple(out)
