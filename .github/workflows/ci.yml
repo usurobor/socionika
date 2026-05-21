@@ -39,3 +39,34 @@ jobs:
       - name: Run unit tests
         run: |
           python -m unittest discover -v tests
+
+  export-artifacts:
+    name: Export STEP/STL artifacts
+    needs: tests-with-cadquery
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install CadQuery
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements-cadquery.txt
+      - name: Export medallion STEP + STL
+        run: |
+          mkdir -p out
+          python -m socionics_medallion.cli compile \
+            --plan canonical --executor cadquery \
+            --step out/medallion.step --stl out/medallion.stl
+          test -s out/medallion.step
+          test -s out/medallion.stl
+      - name: Upload medallion artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: medallion-cad
+          path: |
+            out/medallion.step
+            out/medallion.stl
+          if-no-files-found: error

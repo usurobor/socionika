@@ -4,14 +4,18 @@ These tests are skipped when CadQuery isn't installed, except for:
 
 * the import-laziness test (always run);
 * the ``IMPLEMENTED_OPS == ALL_OP_TYPES`` assertion (always run);
-* the no-midpoint-recomputation source check (always run).
+* the no-midpoint-recomputation source check (always run);
+* the STL binary parser (always run — does NOT import cadquery).
 """
 
 from __future__ import annotations
 
 import importlib.util
 import os
+import struct
 import subprocess
+import sys
+import tempfile
 import unittest
 
 from socionics_medallion.compiler import compile_medallion
@@ -31,6 +35,17 @@ from socionics_medallion.ir import (
     SymbolKind,
 )
 from socionics_medallion.plan import build_plan
+
+# AC3 — documented STL triangle-count floor for the canonical medallion.
+# Even a coarse mesh of 24 sector prisms with circle/triangle/square symbol
+# features substantially exceeds 200 triangles; the floor is a sanity bound,
+# not a fidelity target. Bump this in code (and document why) if the
+# canonical stream ever shrinks below it.
+STL_TRIANGLE_FLOOR: int = 200
+
+# AC4 — round-trip tolerances. Bounds within 1e-3 mm; volume within 1 %.
+ROUND_TRIP_BOUND_TOL_MM: float = 1e-3
+ROUND_TRIP_VOLUME_REL_TOL: float = 0.01
 
 
 def _repo_root() -> str:
@@ -355,6 +370,219 @@ class TestFullCanonicalStream(unittest.TestCase):
         self.assertGreater(result.processed["CutSymbol"], 0)
         self.assertGreater(
             result.processed["RaisedDivider"] + result.processed["EngravedDivider"], 0
+        )
+
+
+# ---------------------------------------------------------------------------
+# AC1 — single-connected-solid invariant.
+# ---------------------------------------------------------------------------
+@unittest.skipUnless(_cadquery_available(), "cadquery not installed")
+class TestSingleConnectedSolid(unittest.TestCase):
+    """AC1 — ``CadQueryExecutor.build_solid()`` returns one connected solid.
+
+    The medallion is constructed cell-by-cell; the executor MUST union all
+    sector prisms into a single connected ``cadquery.Solid`` before any
+    boolean subtraction (lowered fields, engraved dividers, cut symbols).
+    If the canonical stream ever produces a multi-body result that cannot be
+    cleanly unioned, the executor MUST document the gap in its module
+    docstring and the test below is updated to assert the documented N.
+    """
+
+    def test_canonical_stream_is_single_solid(self) -> None:
+        plan = build_plan()
+        ops = compile_medallion(plan)
+        executor = CadQueryExecutor()
+        executor.execute(ops)
+        solid = executor.build_solid()
+        self.assertIsNotNone(solid)
+        # Count of distinct solid bodies in the resulting compound.
+        n_solids = len(solid.Solids())
+        self.assertEqual(
+            n_solids,
+            1,
+            msg=f"expected single-connected-solid; got {n_solids} bodies",
+        )
+
+
+# ---------------------------------------------------------------------------
+# AC2 — STEP export.
+# ---------------------------------------------------------------------------
+@unittest.skipUnless(_cadquery_available(), "cadquery not installed")
+class TestStepExport(unittest.TestCase):
+    """AC2 — the CLI writes a valid STEP file (ISO-10303-21)."""
+
+    def test_step_file_has_iso_header(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            step_path = os.path.join(td, "out.step")
+            rc = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "socionics_medallion.cli",
+                    "compile",
+                    "--plan",
+                    "canonical",
+                    "--executor",
+                    "cadquery",
+                    "--step",
+                    step_path,
+                ],
+                cwd=_repo_root(),
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(
+                rc.returncode, 0, msg=rc.stdout + "\n" + rc.stderr
+            )
+            self.assertTrue(os.path.isfile(step_path))
+            with open(step_path, "rb") as fh:
+                head = fh.read(16)
+            self.assertTrue(
+                head.startswith(b"ISO-10303-21"),
+                msg=f"STEP file is missing ISO-10303-21 header (head={head!r})",
+            )
+            # File is non-trivial.
+            self.assertGreater(os.path.getsize(step_path), 1024)
+
+
+# ---------------------------------------------------------------------------
+# AC3 — STL export (binary), validated without CadQuery.
+# ---------------------------------------------------------------------------
+def _parse_binary_stl_triangle_count(path: str) -> int:
+    """Return the triangle count from a binary STL file.
+
+    Binary STL layout (AC3): 80-byte header, then UINT32-LE triangle count,
+    then ``count`` records of 50 bytes each. We validate the file size
+    matches the declared count so a truncated STL is rejected.
+    """
+    with open(path, "rb") as fh:
+        header = fh.read(80)
+        if len(header) != 80:
+            raise ValueError(f"STL too short for 80-byte header: {path}")
+        count_bytes = fh.read(4)
+        if len(count_bytes) != 4:
+            raise ValueError(f"STL missing UINT32 count: {path}")
+        (count,) = struct.unpack("<I", count_bytes)
+        # The remainder must be exactly count * 50 bytes.
+        remainder = fh.read()
+    expected = count * 50
+    if len(remainder) != expected:
+        raise ValueError(
+            f"STL size mismatch: expected {expected} bytes of triangle "
+            f"records for count={count}, got {len(remainder)} (path={path})"
+        )
+    return count
+
+
+class TestStlBinaryParser(unittest.TestCase):
+    """The inline binary parser is correct on a synthetic fixture.
+
+    This test does NOT import cadquery — it locks the parser to its
+    documented format so AC3's verifiability holds in CAD-free environments.
+    """
+
+    def test_parser_reads_synthetic_count(self) -> None:
+        # Build a minimal binary STL with 3 zeroed triangle records.
+        n = 3
+        blob = b"\x00" * 80 + struct.pack("<I", n) + b"\x00" * (n * 50)
+        with tempfile.NamedTemporaryFile(
+            "wb", suffix=".stl", delete=False
+        ) as tf:
+            tf.write(blob)
+            tmp = tf.name
+        try:
+            self.assertEqual(_parse_binary_stl_triangle_count(tmp), n)
+        finally:
+            os.unlink(tmp)
+
+    def test_parser_rejects_truncated(self) -> None:
+        n = 5
+        # Declare 5 triangles, supply 2 worth of bytes.
+        blob = b"\x00" * 80 + struct.pack("<I", n) + b"\x00" * (2 * 50)
+        with tempfile.NamedTemporaryFile(
+            "wb", suffix=".stl", delete=False
+        ) as tf:
+            tf.write(blob)
+            tmp = tf.name
+        try:
+            with self.assertRaises(ValueError):
+                _parse_binary_stl_triangle_count(tmp)
+        finally:
+            os.unlink(tmp)
+
+
+@unittest.skipUnless(_cadquery_available(), "cadquery not installed")
+class TestStlExport(unittest.TestCase):
+    """AC3 — the CLI writes a binary STL with triangle count above the floor."""
+
+    def test_stl_triangle_count_above_floor(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            stl_path = os.path.join(td, "out.stl")
+            rc = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "socionics_medallion.cli",
+                    "compile",
+                    "--plan",
+                    "canonical",
+                    "--executor",
+                    "cadquery",
+                    "--stl",
+                    stl_path,
+                ],
+                cwd=_repo_root(),
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(
+                rc.returncode, 0, msg=rc.stdout + "\n" + rc.stderr
+            )
+            self.assertTrue(os.path.isfile(stl_path))
+            n_tri = _parse_binary_stl_triangle_count(stl_path)
+            self.assertGreater(
+                n_tri,
+                STL_TRIANGLE_FLOOR,
+                msg=f"STL triangle count {n_tri} <= floor {STL_TRIANGLE_FLOOR}",
+            )
+
+
+# ---------------------------------------------------------------------------
+# AC4 — round-trip validation.
+# ---------------------------------------------------------------------------
+@unittest.skipUnless(_cadquery_available(), "cadquery not installed")
+class TestStepRoundTrip(unittest.TestCase):
+    """AC4 — re-imported STEP matches source bounds (1e-3 mm) and volume (1 %)."""
+
+    def test_round_trip_matches_source(self) -> None:
+        from socionics_medallion.executor import (
+            compare_solids,
+            reimport_step,
+        )
+
+        plan = build_plan()
+        ops = compile_medallion(plan)
+        executor = CadQueryExecutor()
+        executor.execute(ops)
+        source = executor.build_solid()
+
+        with tempfile.TemporaryDirectory() as td:
+            step_path = os.path.join(td, "out.step")
+            executor.export_step(source, step_path)
+            imported = reimport_step(step_path)
+            report = compare_solids(source, imported)
+
+        self.assertLessEqual(
+            report.bound_delta_mm,
+            ROUND_TRIP_BOUND_TOL_MM,
+            msg=f"bound delta {report.bound_delta_mm} mm exceeds "
+            f"{ROUND_TRIP_BOUND_TOL_MM} mm",
+        )
+        self.assertLessEqual(
+            report.volume_rel_delta,
+            ROUND_TRIP_VOLUME_REL_TOL,
+            msg=f"volume relative delta {report.volume_rel_delta} exceeds "
+            f"{ROUND_TRIP_VOLUME_REL_TOL}",
         )
 
 
