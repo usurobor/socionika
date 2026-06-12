@@ -20,6 +20,7 @@ jobs:
         run: |
           python -c "import importlib.util; assert importlib.util.find_spec('cadquery') is None, 'cadquery must not be installed in this job'"
       - name: Run unit tests
+        working-directory: design/logo
         run: |
           python -m unittest discover -v tests
 
@@ -33,10 +34,12 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install CadQuery
+        working-directory: design/logo
         run: |
           pip install --upgrade pip
           pip install -r requirements-cadquery.txt
       - name: Run unit tests
+        working-directory: design/logo
         run: |
           python -m unittest discover -v tests
 
@@ -51,10 +54,12 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install CadQuery
+        working-directory: design/logo
         run: |
           pip install --upgrade pip
           pip install -r requirements-cadquery.txt
       - name: Export medallion STEP + STL
+        working-directory: design/logo
         run: |
           mkdir -p out
           python -m socionics_medallion.cli compile \
@@ -67,6 +72,6 @@ jobs:
         with:
           name: medallion-cad
           path: |
-            out/medallion.step
-            out/medallion.stl
+            design/logo/out/medallion.step
+            design/logo/out/medallion.stl
           if-no-files-found: error
